@@ -251,6 +251,7 @@ paths:
         - KeyAuth: [ ]
       parameters:
         - in: path
+          required: true
           name: id
           schema:
             type: string
@@ -275,6 +276,7 @@ paths:
         - KeyAuth: [ ]
       parameters:
         - in: path
+          required : true
           name: id
           schema:
             type: string
@@ -304,6 +306,8 @@ paths:
           name: keywords
           schema:
             type: array
+            items:
+              type: string
         - in: query
           name: param
           schema:
