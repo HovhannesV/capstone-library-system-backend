@@ -219,7 +219,7 @@ paths:
                   type: string
                 book_id:
                   type: string
-                return_date:
+                due_date:
                   type: string
                   format: date
       responses:
@@ -242,6 +242,49 @@ paths:
                     properties:
                       nextPage:
                         type: string
+  /orders/{id}:
+    put:
+      summary: "Update order status (admin)"
+      tags:
+        - orders
+      security:
+        - KeyAuth: [ ]
+      parameters:
+        - in: path
+          name : id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type : string
+                  enum: ['returned']
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
+
   /books/{id}:
     get:
       summary: "Get book by id"
@@ -388,6 +431,61 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Book'
+  /files:
+    post:
+      summary: "Upload file (admin)"
+      tags:
+        - files
+      security:
+        - KeyAuth: [ ]
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: object
+                    properties:
+                      file_id:
+                        type: string
+  /files/{id}:
+    get:
+      summary: "Download file"
+      tags:
+        - files
+      security:
+        - KeyAuth: [ ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+      responses:
+        200:
+          description: success response
+          content:
+            image/jpg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
 
 
 
@@ -400,9 +498,59 @@ components:
   schemas:
     Order:
       type: object
+      properties:
+        id:
+          type : string
+        status:
+          type: string
+          enum: [ 'taken', 'returned' ]
+        due_date:
+          type: string
+          format: Date
+        return_date:
+          type : string
+          format: Date
+        create_date:
+          type: string
+          format: Date
     Book:
       type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        author:
+          type: name
+        title:
+          type: string
+        coverImageId:
+          type: string
+        publishDate:
+          type: string
+          format: Date
     BookPayload:
       type: object
+      properties:
+        description:
+          type: string
+        author:
+          type: name
+        title:
+          type: string
+        coverImageId:
+          type: string
+        publishDate:
+          type: string
+          format: Date
     User:
       type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        profileImageUrl:
+          type: string
