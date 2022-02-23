@@ -294,6 +294,37 @@ paths:
                   response:
                     type: string
                     enum: [ 'Book deleted' ]
+    put:
+      summary: "Update book by id (admin)"
+      tags:
+        - books
+      security:
+        - KeyAuth: [ ]
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookPayload'
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: string
+                    enum: [ 'Book updated' ]
   /books:
     get:
       summary: "Browse books endpoint"
