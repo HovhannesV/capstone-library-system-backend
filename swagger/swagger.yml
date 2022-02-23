@@ -472,6 +472,8 @@ paths:
         - KeyAuth: [ ]
       parameters:
         - in: path
+          schema:
+            type: string
           name: id
           required: true
       responses:
@@ -521,7 +523,7 @@ components:
         description:
           type: string
         author:
-          type: name
+          type: string
         title:
           type: string
         coverImageId:
@@ -535,7 +537,7 @@ components:
         description:
           type: string
         author:
-          type: name
+          type: string
         title:
           type: string
         coverImageId:
