@@ -71,7 +71,7 @@ paths:
             schema:
               type: object
               properties:
-                refresh_token:
+                refreshToken:
                   type: string
       responses:
         200:
