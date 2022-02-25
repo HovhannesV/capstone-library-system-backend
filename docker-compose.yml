@@ -8,15 +8,15 @@ services:
   node:
     build: .
     environment:
-      MONGO_CONN_STRING: "mongodb://mongo:27017/DB"
+#      MONGO_CONN_STRING: "mongodb://mongo:27017/DB"
       PORT: "3000"
-    depends_on:
-      - mongo
+#    depends_on:
+#      - mongo
     ports:
       - 3000:3000
-  mongo:
-    image: mongo
-    logging:
-      driver: none
-    volumes:
-      - mongodb:/data/db
+#  mongo:
+#    image: mongo
+#    logging:
+#      driver: none
+#    volumes:
+#      - mongodb:/data/db
