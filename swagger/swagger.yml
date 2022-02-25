@@ -3,7 +3,7 @@ info:
   title: Library System API
   version: 0.0.1
 servers:
-  - url: 'http://localhost:8080/'
+  - url: 'http://localhost:3000/'
     description: local
 paths:
   /user/sessions:
