@@ -89,6 +89,8 @@ paths:
                     properties:
                       token:
                         type: string
+                      refresh_token:
+                        type: string
   /users/me:
     get:
       summary: "Endpoint for getting user info"
@@ -138,6 +140,13 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Book'
+                      metadata:
+                        type: object
+                        properties:
+                          latestBooksNextPage:
+                            type: string
+                          mostFavoriteBooksNextPage:
+                            type: string
   /books/favorite:
     get:
       summary: "Favorite books endpoint for user"
@@ -242,16 +251,15 @@ paths:
                     properties:
                       nextPage:
                         type: string
-  /orders/{id}:
     put:
-      summary: "Update order status (admin)"
+      summary: "Update order status by book instance id (admin)"
       tags:
         - orders
       security:
         - KeyAuth: [ ]
       parameters:
-        - in: path
-          name : id
+        - in: query
+          name : book_instance_id
           required: true
           schema:
             type: string
@@ -506,6 +514,8 @@ components:
         status:
           type: string
           enum: [ 'taken', 'returned' ]
+        book_instance_id:
+          type: string
         due_date:
           type: string
           format: Date
@@ -520,6 +530,13 @@ components:
       properties:
         id:
           type: string
+        instances:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
         description:
           type: string
         author:
