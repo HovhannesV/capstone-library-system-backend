@@ -60,7 +60,7 @@ paths:
                   response:
                     type: string
                     enum: ['User has signed out']
-  /tokens:
+  /user/tokens:
     post:
       summary: endpoint for refreshing token
       tags:
@@ -89,9 +89,9 @@ paths:
                     properties:
                       token:
                         type: string
-                      refresh_token:
+                      refreshToken:
                         type: string
-  /users/me:
+  /user:
     get:
       summary: "Endpoint for getting user info"
       tags:
