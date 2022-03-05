@@ -172,6 +172,35 @@ paths:
                     properties:
                       nextPage:
                         type: string
+  /books/favorites:
+    post:
+      summary: "Adds book to favorites"
+      tags:
+        - books
+      security:
+        - KeyAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                book_id:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: string
+                    enum: ['Book has been added to favorites']
   /orders:
     get:
       summary: "Get orders of user"
