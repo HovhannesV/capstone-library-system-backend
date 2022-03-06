@@ -202,11 +202,11 @@ paths:
                     type: string
                     enum: ['Book has been added to favorites']
 
-  /orders:
+  /borrows:
     get:
-      summary: "Get orders of user"
+      summary: "Get borrows of user"
       tags:
-        - orders
+        - borrows
       security:
         - KeyAuth: [ ]
       parameters:
@@ -230,7 +230,7 @@ paths:
                     type: array
                     items:
                       allOf:
-                        - $ref: '#/components/schemas/Order'
+                        - $ref: '#/components/schemas/borrow'
                         - type: object
                           properties:
                             book:
@@ -241,9 +241,9 @@ paths:
                       nextPage:
                         type: string
     post:
-      summary: "Create order, when admin hands the book to a user (admin)"
+      summary: "Create borrow, when admin hands the book to a user (admin)"
       tags:
-        - orders
+        - borrows
       security:
         - KeyAuth: [ ]
       requestBody:
@@ -273,16 +273,16 @@ paths:
                   response:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Order'
+                      $ref: '#/components/schemas/borrow'
                   metadata:
                     type: object
                     properties:
                       nextPage:
                         type: string
     put:
-      summary: "Update order status by book instance id (admin)"
+      summary: "Update borrow status by book instance id (admin)"
       tags:
-        - orders
+        - borrows
       security:
         - KeyAuth: [ ]
       parameters:
@@ -314,7 +314,7 @@ paths:
                   response:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Order'
+                      $ref: '#/components/schemas/borrow'
                   metadata:
                     type: object
                     properties:
@@ -819,7 +819,7 @@ components:
       name: Authorization
       in: header
   schemas:
-    Order:
+    borrow:
       type: object
       properties:
         id:
