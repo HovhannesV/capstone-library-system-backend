@@ -715,6 +715,33 @@ paths:
                           type: string
                         name:
                           type: string
+  /authors/{id}/books:
+    get:
+      summary: "Browse books by author id"
+      tags:
+        - authors
+      security:
+        - KeyAuth: [ ]
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: array
+                    items:
+                      $ref : '#/components/schemas/Book'
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
   /genres:
     get:
       summary: "Browse genres (admin)"
