@@ -174,11 +174,41 @@ paths:
                     properties:
                       nextPage:
                         type: string
-  /orders:
-    get:
-      summary: "Get orders of user"
+  /books/favorites:
+    post:
+      summary: "Adds book to favorites"
       tags:
-        - orders
+        - books
+      security:
+        - KeyAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                book_id:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: string
+                    enum: ['Book has been added to favorites']
+
+  /borrows:
+    get:
+      summary: "Get borrows of user"
+      tags:
+        - borrows
       security:
         - KeyAuth: [ ]
       parameters:
@@ -202,7 +232,7 @@ paths:
                     type: array
                     items:
                       allOf:
-                        - $ref: '#/components/schemas/Order'
+                        - $ref: '#/components/schemas/borrow'
                         - type: object
                           properties:
                             book:
@@ -213,9 +243,9 @@ paths:
                       nextPage:
                         type: string
     post:
-      summary: "Create order, when admin hands the book to a user (admin)"
+      summary: "Create borrow, when admin hands the book to a user (admin)"
       tags:
-        - orders
+        - borrows
       security:
         - KeyAuth: [ ]
       requestBody:
@@ -245,16 +275,16 @@ paths:
                   response:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Order'
+                      $ref: '#/components/schemas/borrow'
                   metadata:
                     type: object
                     properties:
                       nextPage:
                         type: string
     put:
-      summary: "Update order status by book instance id (admin)"
+      summary: "Update borrow status by book instance id (admin)"
       tags:
-        - orders
+        - borrows
       security:
         - KeyAuth: [ ]
       parameters:
@@ -286,7 +316,7 @@ paths:
                   response:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Order'
+                      $ref: '#/components/schemas/borrow'
                   metadata:
                     type: object
                     properties:
@@ -439,6 +469,74 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Book'
+  /books/{id}/instances:
+    post:
+      summary: "Add book instance (admin)"
+      tags:
+        - book-instance
+      security:
+        - KeyAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                coverType:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      coverType:
+                        type: string
+  /books/{id}/instances/{instanceId}:
+    delete:
+      summary: "Delete book instance (admin)"
+      tags:
+        - book-instance
+      security:
+        - KeyAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+        - name: instanceId
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: string
+                    enum: ['Book successfully deleted']
   /files:
     post:
       summary: "Upload file (admin)"
@@ -496,6 +594,223 @@ paths:
               schema:
                 type: string
                 format: binary
+  /authors:
+    get:
+      summary: "Browse authors (admin)"
+      tags:
+        - authors
+      security:
+        - KeyAuth: [ ]
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        authorId:
+                          type: string
+                        name:
+                          type: string
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
+    post:
+      summary: "Add author (admin)"
+      tags:
+        - authors
+      security:
+        - KeyAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: object
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+  /authors/{id}/books:
+    get:
+      summary: "Browse books by author id"
+      tags:
+        - authors
+      security:
+        - KeyAuth: [ ]
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: array
+                    items:
+                      $ref : '#/components/schemas/Book'
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
+  /genres:
+    get:
+      summary: "Browse genres (admin)"
+      tags:
+        - genres
+      security:
+        - KeyAuth: [ ]
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        genre:
+                          type: string
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
+    post:
+      summary: "Add genre (admin)"
+      tags:
+        - genres
+      security:
+        - KeyAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                genre:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: object
+                    items:
+                      type: object
+                      properties:
+                        genre:
+                          type: string
+  /coverTypes:
+    get:
+      summary: "Browse coverTypes (admin)"
+      tags:
+        - coverTypes
+      security:
+        - KeyAuth: [ ]
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        coverType:
+                          type: string
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
+    post:
+      summary: "Add coverType (admin)"
+      tags:
+        - coverTypes
+      security:
+        - KeyAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                coverType:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: object
+                    items:
+                      type: object
+                      properties:
+                        coverType:
+                          type: string
 
 
 
@@ -506,7 +821,7 @@ components:
       name: Authorization
       in: header
   schemas:
-    Order:
+    borrow:
       type: object
       properties:
         id:
@@ -537,6 +852,8 @@ components:
             properties:
               id:
                 type: string
+              coverType:
+                type: string
         description:
           type: string
         author:
@@ -548,12 +865,14 @@ components:
         publishDate:
           type: string
           format: Date
+        fileId:
+          type: string
     BookPayload:
       type: object
       properties:
         description:
           type: string
-        author:
+        authorId:
           type: string
         title:
           type: string
@@ -562,6 +881,8 @@ components:
         publishDate:
           type: string
           format: Date
+        fileId:
+          type: string
     User:
       type: object
       properties:
