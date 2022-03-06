@@ -1,7 +1,7 @@
 import {
     BadRequestException,
     CanActivate,
-    ExecutionContext, Inject,
+    ExecutionContext, HttpException, Inject,
     Injectable, UnauthorizedException
 } from '@nestjs/common';
 import {UserService} from "./user.service";
@@ -30,10 +30,18 @@ export class AuthGuard implements CanActivate {
         }
         try {
             const { role, id } = jwt.verify(authToken, this.jwtToken);
+
+            const roles = this.reflector.get<string>('roles', context.getHandler()) || ['user', 'admin']
+
+            if(!roles.includes(role)) throw new BadRequestException('The endpoint is not designed for the role');
+
             requestObj.headers.user_id = id;
             requestObj.headers.role =  role;
             return true;
         } catch(ex) {
+            if(ex instanceof HttpException) {
+                throw ex;
+            }
             throw new UnauthorizedException();
         }
     }

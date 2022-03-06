@@ -26,10 +26,9 @@ export class FileController {
             }
         })
     }))
+    @SetMetadata('roles', ['admin'])
     async uploadFile(@UploadedFile() file: Express.Multer.File,
-                     @Headers('user_id') adminId,
-                     @Headers('role') role : string) {
-        if(role !== 'admin') throw new UnauthorizedException("admin account needed");
+                     @Headers('user_id') adminId) {
         const iconId = await this.iconService.uploadIcon(file.path);
         fs.unlink(file.path, (err) => { if(err) console.log(err); })
         return {
