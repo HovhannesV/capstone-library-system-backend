@@ -621,6 +621,196 @@ paths:
               schema:
                 type: string
                 format: binary
+  /authors:
+    get:
+      summary: "Browse authors (admin)"
+      tags:
+        - authors
+      security:
+        - KeyAuth: [ ]
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        authorId:
+                          type: string
+                        name:
+                          type: string
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
+    post:
+      summary: "Add author (admin)"
+      tags:
+        - authors
+      security:
+        - KeyAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: object
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+  /genres:
+    get:
+      summary: "Browse genres (admin)"
+      tags:
+        - genres
+      security:
+        - KeyAuth: [ ]
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        genre:
+                          type: string
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
+    post:
+      summary: "Add genre (admin)"
+      tags:
+        - genres
+      security:
+        - KeyAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                genre:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: object
+                    items:
+                      type: object
+                      properties:
+                        genre:
+                          type: string
+  /coverTypes:
+    get:
+      summary: "Browse coverTypes (admin)"
+      tags:
+        - coverTypes
+      security:
+        - KeyAuth: [ ]
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        coverType:
+                          type: string
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
+    post:
+      summary: "Add coverType (admin)"
+      tags:
+        - coverTypes
+      security:
+        - KeyAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                coverType:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: object
+                    items:
+                      type: object
+                      properties:
+                        coverType:
+                          type: string
 
 
 
@@ -682,7 +872,7 @@ components:
       properties:
         description:
           type: string
-        author:
+        authorId:
           type: string
         title:
           type: string
