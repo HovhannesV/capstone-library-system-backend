@@ -675,6 +675,8 @@ components:
         publishDate:
           type: string
           format: Date
+        fileId:
+          type: string
     BookPayload:
       type: object
       properties:
@@ -689,6 +691,8 @@ components:
         publishDate:
           type: string
           format: Date
+        fileId:
+          type: string
     User:
       type: object
       properties:
