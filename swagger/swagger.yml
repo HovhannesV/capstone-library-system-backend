@@ -496,6 +496,74 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Book'
+  /books/{id}/instances:
+    post:
+      summary: "Add book instance (admin)"
+      tags:
+        - books
+      security:
+        - KeyAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                coverType:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      coverType:
+                        type: string
+  /books/{id}/instances/{instanceId}:
+    delete:
+      summary: "Delete book instance (admin)"
+      tags:
+        - books
+      security:
+        - KeyAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+        - name: instanceId
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: string
+                    enum: ['Book successfully deleted']
   /files:
     post:
       summary: "Upload file (admin)"
@@ -593,6 +661,8 @@ components:
             type: object
             properties:
               id:
+                type: string
+              coverType:
                 type: string
         description:
           type: string
