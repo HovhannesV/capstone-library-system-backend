@@ -748,11 +748,9 @@ paths:
                     enum: [ 'success' ]
                   response:
                     type: object
-                    items:
-                      type: object
-                      properties:
-                        genre:
-                          type: string
+                    properties:
+                      genre:
+                        type: string
   /coverTypes:
     get:
       summary: "Browse coverTypes (admin)"
