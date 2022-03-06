@@ -4,6 +4,7 @@ import {UserService} from "./user.service";
 import {UserController} from "./user.controller";
 import {MongooseModule} from "@nestjs/mongoose";
 import {UserSchema, User} from "./model/user";
+import {GoogleAccountService} from "./google-account-service";
 
 
 @Module({
@@ -16,6 +17,11 @@ import {UserSchema, User} from "./model/user";
         },
         AuthGuard,
         UserService,
+        GoogleAccountService,
+        {
+            provide : 'GOOGLE_CLIENT_ID',
+            useValue: process.env.GOOGLE_CLIENT_ID
+        }
     ],
     imports : [
         MongooseModule.forFeature(
