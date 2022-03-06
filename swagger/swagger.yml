@@ -621,6 +621,8 @@ paths:
                           type: string
                         name:
                           type: string
+                        imageId:
+                          type: string
                   metadata:
                     type: object
                     properties:
@@ -659,6 +661,8 @@ paths:
                         id:
                           type: string
                         name:
+                          type: string
+                        imageId:
                           type: string
   /authors/{id}/books:
     get:
@@ -857,7 +861,12 @@ components:
         description:
           type: string
         author:
-          type: string
+          type: object
+          properties:
+            name:
+              type: string
+            imageId:
+              type: string
         title:
           type: string
         coverImageId:

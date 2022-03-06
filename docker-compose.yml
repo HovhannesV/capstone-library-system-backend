@@ -8,8 +8,10 @@ services:
   node:
     build: .
     environment:
-#      MONGO_CONN_STRING: "mongodb://mongo:27017/DB"
+      MONGO_CONN_STRING: "mongodb://mongo:27017/DB"
       PORT: "3000"
+      GOOGLE_CLIENT_ID: "GOOGLE_CLIENT_ID"
+      JWT_SECRET : "JWT_SECRET"
 #    depends_on:
 #      - mongo
     ports:
