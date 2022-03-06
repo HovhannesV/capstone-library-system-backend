@@ -15,7 +15,7 @@ export type AuthorDocument = Author & mongoose.Document;
 export class Author {
     id: string;
 
-    @Prop({ type: String, required: true })
+    @Prop({ type: String, required: true, index : true })
     name: string;
 
     @Prop({ type: String, required: true })
