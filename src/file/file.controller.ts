@@ -26,7 +26,7 @@ export class FileController {
             }
         })
     }))
-    async uploadIcon(@UploadedFile() file: Express.Multer.File,
+    async uploadFile(@UploadedFile() file: Express.Multer.File,
                      @Headers('user_id') adminId,
                      @Headers('role') role : string) {
         if(role !== 'admin') throw new UnauthorizedException("admin account needed");
@@ -39,7 +39,7 @@ export class FileController {
 
     @Get('/:iconId')
     @SetMetadata('auth', 'none')
-    async getIcon(@Param('iconId') iconId, @Res() res) {
+    async getFile(@Param('iconId') iconId, @Res() res) {
         res.set({
             'Content-Type': mime.lookup(iconId.split('.').reverse()[0])
         });
