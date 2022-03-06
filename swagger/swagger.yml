@@ -201,63 +201,6 @@ paths:
                   response:
                     type: string
                     enum: ['Book has been added to favorites']
-  /books/wishlist:
-    post:
-      summary: "Adds book to wishlist"
-      tags:
-        - wishlist
-      security:
-        - KeyAuth: [ ]
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                bookId:
-                  type: string
-      responses:
-        200:
-          description: success response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: [ 'success' ]
-                  response:
-                    type: string
-                    enum: [ 'Book has been added to wishlist' ]
-    delete:
-      summary: "delete book from wishlist"
-      tags:
-        - wishlist
-      security:
-        - KeyAuth: [ ]
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                bookId:
-                  type: string
-      responses:
-        200:
-          description: success response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: [ 'success' ]
-                  response:
-                    type: string
-                    enum: [ 'Book has been deleted from wishlist' ]
 
   /orders:
     get:
