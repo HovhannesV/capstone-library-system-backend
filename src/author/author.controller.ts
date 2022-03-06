@@ -5,6 +5,7 @@ import {
 import {AuthorService} from "./author.service";
 import {IsString} from "class-validator";
 import * as _ from 'lodash'
+import {auth} from "google-auth-library";
 
 class AuthorPayload {
     @IsString()
@@ -37,10 +38,10 @@ export class AuthorController {
     async getAuthors(@Query('offset', new DefaultValuePipe(0)) offset : number,
                      @Query('limit', new DefaultValuePipe(60)) limit : number) {
 
-        const author = await this.authorService.getAuthors(offset, limit);
+        const authors = await this.authorService.getAuthors(offset, limit);
         return {
             status : 'success',
-            response : _.pick(author, 'id', 'name'),
+            response : authors.map(author => _.pick(author, 'id', 'name')),
             metadata : {
                 nextPage : `/authors?offset=${offset + limit}&limit=${limit}`
             }
