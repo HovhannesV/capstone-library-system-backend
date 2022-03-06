@@ -3,15 +3,6 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Author, AuthorDocument} from "./model/author";
 import {Model} from "mongoose";
 
-import * as jwt from 'jsonwebtoken'
-import {User, UserDocument} from "../user/model/user";
-
-type UserInfo = {
-    email : string,
-    name : string,
-    picture : string
-}
-
 
 @Injectable()
 export class AuthorService {

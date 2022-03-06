@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 
-export type GenreDocument = Genre & mongoose.Document;
+export type CoverTypeDocument = CoverType & mongoose.Document;
 
 @Schema({
     timestamps: {
@@ -12,11 +12,11 @@ export type GenreDocument = Genre & mongoose.Document;
         getters: true,
     },
 })
-export class Genre {
+export class CoverType {
     id: string;
 
     @Prop({ type: String, required: true, unique : true })
-    genre: string;
+    coverType: string;
 }
 
-export const GenreSchema = SchemaFactory.createForClass(Genre);
+export const CoverTypeSchema = SchemaFactory.createForClass(CoverType);

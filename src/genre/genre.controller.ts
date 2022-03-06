@@ -39,7 +39,7 @@ export class GenreController {
             status : 'success',
             response : genres.map(genre => _.pick(genre, 'genre')),
             metadata : {
-                nextPage : `/genres?offset=${offset + limit}&limit=${limit}`
+                nextPage : genres.length === limit ? `/genres?offset=${offset + limit}&limit=${limit}` : undefined
             }
         }
     }

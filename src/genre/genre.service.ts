@@ -3,12 +3,6 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Genre, GenreDocument} from "./model/genre";
 import {Model} from "mongoose";
 
-type UserInfo = {
-    email : string,
-    name : string,
-    picture : string
-}
-
 
 @Injectable()
 export class GenreService {

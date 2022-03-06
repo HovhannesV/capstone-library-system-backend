@@ -43,7 +43,7 @@ export class AuthorController {
             status : 'success',
             response : authors.map(author => _.pick(author, 'id', 'name')),
             metadata : {
-                nextPage : `/authors?offset=${offset + limit}&limit=${limit}`
+                nextPage : authors.length === limit ? `/authors?offset=${offset + limit}&limit=${limit}` : undefined
             }
         }
     }
