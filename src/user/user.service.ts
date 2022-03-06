@@ -1,4 +1,4 @@
-import {Inject, Injectable, NotFoundException} from "@nestjs/common";
+import {BadRequestException, Inject, Injectable, NotFoundException} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import {User, UserDocument} from "./model/user";
 import {Model} from "mongoose";
@@ -20,6 +20,16 @@ export class UserService {
 
     @Inject('JWT_SECRET')
     private jwtToken : string;
+
+    private emailDomainPatterns : RegExp[];
+    private adminEmailPatterns : RegExp[];
+
+
+    constructor(@Inject('EMAIL_DOMAIN_PATTERNS') emailDomainPatterns : string[],
+                @Inject('ADMIN_EMAIL_PATTERNS') adminEmailPatterns : string[]) {
+        this.emailDomainPatterns = emailDomainPatterns.map(str => new RegExp(str));
+        this.adminEmailPatterns = adminEmailPatterns.map(str => new RegExp(str));
+    }
 
     generateToken(id : string, role : string) {
         return jwt.sign(
@@ -70,10 +80,15 @@ export class UserService {
     }
 
     async createUserByEmail(userInfo : UserInfo) {
+        if(!this.emailDomainPatterns.some(pattern => !!userInfo.email.match(pattern)[0])) {
+            throw new BadRequestException('Email domain is not part of the library');
+        }
+        const role = this.adminEmailPatterns.some(pattern => !!userInfo.email.match(pattern)[0]) ? 'admin' : 'user';
+
         return (await this.userModel.create({
             ...userInfo,
             profileImageUrl : userInfo.picture,
-            role : 'user', // todo
+            role,
             refreshTokens : [],
         })).toObject();
     }

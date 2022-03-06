@@ -21,6 +21,14 @@ import {GoogleAccountService} from "./google-account-service";
         {
             provide : 'GOOGLE_CLIENT_ID',
             useValue: process.env.GOOGLE_CLIENT_ID
+        },
+        {
+            provide : 'EMAIL_DOMAIN_PATTERNS',
+            useValue: require('../../email_config.json').emailDomainPatterns
+        },
+        {
+            provide : 'ADMIN_EMAIL_PATTERNS',
+            useValue: require('../../email_config.json').adminEmailPatterns
         }
     ],
     imports : [
