@@ -54,9 +54,9 @@ export class UserService {
         });
     }
 
-    async removeRefreshToken(id : string, refreshToken : string) {
+    async removeRefreshToken(refreshToken : string) {
         await this.userModel.updateOne({
-            id
+            refreshTokens : refreshToken
         }, {
             $pull : {
                 refreshTokens : refreshToken

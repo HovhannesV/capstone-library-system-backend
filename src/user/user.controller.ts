@@ -60,8 +60,9 @@ export class UserController {
 
 
     @Delete('/sessions')
-    async deleteSession(@Headers('user_id') userId, @Query('refreshToken') refreshToken : string) {
-        await this.userService.removeRefreshToken(userId, refreshToken);
+    @SetMetadata('auth', 'none')
+    async deleteSession(@Query('refreshToken') refreshToken : string) {
+        await this.userService.removeRefreshToken(refreshToken);
         return {
             status : 'success',
             response : 'User has signed out'
