@@ -1,7 +1,7 @@
 version: '3'
 
 volumes:
-  mongodb:
+  mongodb-db:
     driver: local
 
 services:
@@ -18,9 +18,9 @@ services:
       - 3000:3000
   mongo:
     image: mongo
-    ports:
-      - 27017:27017
     logging:
       driver: none
     volumes:
-      - mongodb:/data/db
+      - mongodb-db:/data/db
+    ports:
+      - 27017:27017
