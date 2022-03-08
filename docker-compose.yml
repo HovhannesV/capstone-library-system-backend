@@ -12,13 +12,15 @@ services:
       PORT: "3000"
       GOOGLE_CLIENT_ID: "GOOGLE_CLIENT_ID"
       JWT_SECRET : "JWT_SECRET"
-#    depends_on:
-#      - mongo
+    depends_on:
+      - mongo
     ports:
       - 3000:3000
-#  mongo:
-#    image: mongo
-#    logging:
-#      driver: none
-#    volumes:
-#      - mongodb:/data/db
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    logging:
+      driver: none
+    volumes:
+      - mongodb:/data/db
