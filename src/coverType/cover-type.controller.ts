@@ -12,7 +12,7 @@ class CoverTypePayload {
 }
 
 
-@Controller("/genres")
+@Controller("/coverTypes")
 export class CoverTypeController {
 
     constructor(
