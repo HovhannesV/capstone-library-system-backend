@@ -83,7 +83,7 @@ export class UserService {
         if(!this.emailDomainPatterns.some(pattern => !!userInfo.email.match(pattern)[0])) {
             throw new BadRequestException('Email domain is not part of the library');
         }
-        const role = this.adminEmailPatterns.some(pattern => !!userInfo.email.match(pattern)[0]) ? 'admin' : 'user';
+        const role = this.adminEmailPatterns.some(pattern => !!userInfo.email.match(pattern)?.[0]) ? 'admin' : 'user';
 
         return (await this.userModel.create({
             ...userInfo,

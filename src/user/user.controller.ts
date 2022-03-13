@@ -39,21 +39,17 @@ export class UserController {
         };
     }
 
-    @Get('/tokens')
+    @Post('/tokens')
     @SetMetadata('auth', 'none')
     async getToken(@Body() payload : CreateAccessTokenPayload) {
         const user = await this.userService.getByRefreshToken(payload.refreshToken);
 
-        const refreshToken = uuidv4();
         const token = this.userService.generateToken(user.id, user.role);
-
-        await this.userService.updateRefreshToken(payload.refreshToken, refreshToken);
 
         return {
             status : 'success',
             response : {
-                token,
-                refreshToken
+                token
             }
         };
     }

@@ -14,7 +14,7 @@ import * as jwt from 'jsonwebtoken'
 export class AuthGuard implements CanActivate {
 
     @Inject('JWT_SECRET')
-    private jwtToken : string;
+    private jwtSecret : string;
 
     constructor(private userService: UserService,
                 private reflector: Reflector) {}
@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
             throw new BadRequestException('auth token not present');
         }
         try {
-            const { role, id } = jwt.verify(authToken, this.jwtToken);
+            const { role, id } = jwt.verify(authToken, this.jwtSecret);
 
             const roles = this.reflector.get<string>('roles', context.getHandler()) || ['user', 'admin']
 

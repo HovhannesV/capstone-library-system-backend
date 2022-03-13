@@ -21,8 +21,8 @@ export class User {
     @Prop({ type: String, required: true })
     name: string;
 
-    @Prop({ type: Boolean, default : false })
-    profileImageUrl: boolean;
+    @Prop({ type: String, default : false })
+    profileImageUrl: string;
 
     @Prop({ type: String, enum: ['admin', 'user'], required : true })
     role: string

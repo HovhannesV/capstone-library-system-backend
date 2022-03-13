@@ -8,13 +8,16 @@ import {GoogleAccountService} from "./google-account-service";
 
 
 @Module({
-    exports: [AuthGuard, UserService],
-    controllers: [ UserController ],
-    providers: [
+    exports: [
+        AuthGuard,
+        UserService,
         {
             provide: 'JWT_SECRET',
             useValue: process.env.JWT_SECRET,
-        },
+        }
+    ],
+    controllers: [ UserController ],
+    providers: [
         AuthGuard,
         UserService,
         GoogleAccountService,
@@ -29,6 +32,10 @@ import {GoogleAccountService} from "./google-account-service";
         {
             provide : 'ADMIN_EMAIL_PATTERNS',
             useValue: require('../../email_config.json').adminEmailPatterns
+        },
+        {
+            provide: 'JWT_SECRET',
+            useValue: process.env.JWT_SECRET,
         }
     ],
     imports : [

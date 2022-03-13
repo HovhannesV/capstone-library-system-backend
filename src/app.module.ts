@@ -3,6 +3,8 @@ import {UserModule} from "./user/user.module";
 import {AuthorModule} from "./author/author.module";
 import {MongooseModule} from "@nestjs/mongoose";
 import {FileModule} from "./file/file.module";
+import {APP_GUARD} from "@nestjs/core";
+import {AuthGuard} from "./user/auth.guard";
 
 @Module({
     imports: [
@@ -15,6 +17,12 @@ import {FileModule} from "./file/file.module";
             },
         ),
         FileModule,
+    ],
+    providers: [
+        {
+            provide: APP_GUARD,
+            useClass: AuthGuard,
+        }
     ]
 })
 export class AppModule {}
