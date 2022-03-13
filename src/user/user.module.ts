@@ -11,10 +11,7 @@ import {GoogleAccountService} from "./google-account-service";
     exports: [
         AuthGuard,
         UserService,
-        {
-            provide: 'JWT_SECRET',
-            useValue: process.env.JWT_SECRET,
-        }
+        'JWT_SECRET',
     ],
     controllers: [ UserController ],
     providers: [
