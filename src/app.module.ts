@@ -7,6 +7,7 @@ import {APP_GUARD} from "@nestjs/core";
 import {AuthGuard} from "./user/auth.guard";
 import {CoverTypeModule} from "./coverType/cover-type.module";
 import {GenreModule} from "./genre/genre.module";
+import {BookModule} from "./book/book.module";
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import {GenreModule} from "./genre/genre.module";
             },
         ),
         FileModule,
+        BookModule
     ],
     providers: [
         {

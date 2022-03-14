@@ -468,9 +468,7 @@ paths:
                     type: string
                     enum: [ 'success' ]
                   response:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Book'
+                    $ref: '#/components/schemas/Book'
   /books/{id}/instances:
     post:
       summary: "Add book instance (admin)"
@@ -892,6 +890,13 @@ components:
           format: Date
         fileId:
           type: string
+        genres:
+          type: array
+          items:
+            type: string
+        coverType:
+          type: string
+
     User:
       type: object
       properties:
