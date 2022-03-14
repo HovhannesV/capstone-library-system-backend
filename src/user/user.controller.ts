@@ -18,6 +18,9 @@ class CreateAccessTokenPayload {
 class CreateSessionPayload {
     @IsString()
     token : string
+
+    @IsString()
+    fcmToken: string
 }
 
 @Controller("/user")
@@ -58,7 +61,7 @@ export class UserController {
     @Delete('/sessions')
     @SetMetadata('auth', 'none')
     async deleteSession(@Query('refreshToken') refreshToken : string) {
-        await this.userService.removeRefreshToken(refreshToken);
+        await this.userService.removeSession(refreshToken);
         return {
             status : 'success',
             response : 'User has signed out'
@@ -76,7 +79,7 @@ export class UserController {
         }
 
         const refreshToken = uuidv4();
-        await this.userService.addRefreshToken(user.id, refreshToken);
+        await this.userService.addSession(user.id, refreshToken, body.fcmToken);
 
 
         return {

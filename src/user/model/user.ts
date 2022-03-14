@@ -3,6 +3,17 @@ import * as mongoose from 'mongoose';
 
 export type UserDocument = User & mongoose.Document;
 
+@Schema({})
+export class Session {
+    @Prop({ type: String, required : true })
+    refreshToken: string
+
+    @Prop({ type: String, required : true })
+    fcmToken: string
+}
+
+export const SessionSchema = SchemaFactory.createForClass(Session);
+
 @Schema({
     timestamps: {
         createdAt: 'create_date',
@@ -27,8 +38,8 @@ export class User {
     @Prop({ type: String, enum: ['admin', 'user'], required : true })
     role: string
 
-    @Prop({ type: [ { type: String  } ], required : true })
-    refreshTokens : string[]
+    @Prop({ type: [SessionSchema], required : true })
+    sessions : Session[]
 
     @Prop()
     create_date: Date;

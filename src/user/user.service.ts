@@ -46,30 +46,20 @@ export class UserService {
     }
 
     async getByRefreshToken(refreshToken : string) {
-        const user = await this.userModel.findOne({ refreshTokens : refreshToken });
+        const user = await this.userModel.findOne({ 'sessions.refreshToken' : refreshToken });
         if(!user) throw new NotFoundException("User not found");
         return user.toObject();
     }
 
-    async updateRefreshToken(oldRefreshToken : string, newRefreshToken : string) {
-        await this.userModel.updateOne({
-            refreshTokens : oldRefreshToken
-        }, {
-            $pull : {
-                refreshTokens : oldRefreshToken
-            },
-            $push : {
-                refreshTokens : newRefreshToken
-            }
-        });
-    }
 
-    async removeRefreshToken(refreshToken : string) {
+    async removeSession(refreshToken : string) {
         await this.userModel.updateOne({
-            refreshTokens : refreshToken
+            'sessions.refreshToken' : refreshToken
         }, {
             $pull : {
-                refreshTokens : refreshToken
+                sessions : {
+                    refreshToken : refreshToken
+                }
             }
         });
     }
@@ -89,14 +79,17 @@ export class UserService {
             ...userInfo,
             profileImageUrl : userInfo.picture,
             role,
-            refreshTokens : [],
+            sessions : [],
         })).toObject();
     }
 
-    async addRefreshToken(id : string, refreshToken : string) {
+    async addSession(id : string, refreshToken : string, fcmToken : string) {
         await this.userModel.updateOne({id}, {
             $push : {
-                refreshTokens : refreshToken
+                sessions : {
+                    refreshToken,
+                    fcmToken
+                }
             }
         })
     }

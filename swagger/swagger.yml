@@ -19,6 +19,8 @@ paths:
               properties:
                 token:
                   type: string
+                fcmToken:
+                  type: string
       responses:
         200:
           description: success response
