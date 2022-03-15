@@ -3,19 +3,22 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Book, BookDocument} from "./model/book";
 import {Model} from "mongoose";
 import {IsArray, IsDate, IsDateString, IsNotEmpty, IsString} from "class-validator";
-import {Type} from "class-transformer";
+import {Transform, TransformFnParams, Type} from "class-transformer";
 
 export class CreateBookPayload {
     @IsString()
     @IsNotEmpty()
+    @Transform(({ value }: TransformFnParams) => value.trim())
     title: string;
 
     @IsString()
     @IsNotEmpty()
+    @Transform(({ value }: TransformFnParams) => value.trim())
     description: string;
 
     @IsString()
     @IsNotEmpty()
+    @Transform(({ value }: TransformFnParams) => value.trim())
     coverImageId: string;
 
     @IsDateString()
@@ -23,18 +26,22 @@ export class CreateBookPayload {
 
     @IsArray()
     @Type(() => String)
+    @Transform(({ value }: TransformFnParams) => value.map(val => val.trim()))
     genres: string[]
 
     @IsString()
     @IsNotEmpty()
+    @Transform(({ value }: TransformFnParams) => value.trim())
     coverType: string
 
     @IsString()
     @IsNotEmpty()
+    @Transform(({ value }: TransformFnParams) => value.trim())
     fileId: string
 
     @IsString()
     @IsNotEmpty()
+    @Transform(({ value }: TransformFnParams) => value.trim())
     authorId: string;
 }
 

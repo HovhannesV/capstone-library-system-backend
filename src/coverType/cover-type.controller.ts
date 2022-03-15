@@ -5,9 +5,11 @@ import {
 import {CoverTypeService} from "./cover-type.service";
 import {IsString} from "class-validator";
 import * as _ from 'lodash'
+import {Transform, TransformFnParams} from "class-transformer";
 
 class CoverTypePayload {
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value.trim())
     coverType : string
 }
 

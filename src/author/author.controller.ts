@@ -6,12 +6,15 @@ import {AuthorService} from "./author.service";
 import {IsString} from "class-validator";
 import * as _ from 'lodash'
 import {auth} from "google-auth-library";
+import {Transform, TransformFnParams} from "class-transformer";
 
 class AuthorPayload {
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value.trim())
     name : string
 
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value.trim())
     imageId: string
 }
 

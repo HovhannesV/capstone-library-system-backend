@@ -5,9 +5,11 @@ import {
 import {GenreService} from "./genre.service";
 import {IsString} from "class-validator";
 import * as _ from 'lodash'
+import {Transform, TransformFnParams} from "class-transformer";
 
 class GenrePayload {
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value.trim())
     genre : string
 }
 
