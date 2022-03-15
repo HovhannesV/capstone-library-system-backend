@@ -182,8 +182,12 @@ export class BookService {
         return book.toObject();
     }
 
-    async findBookById(id : String) {
+    async findBookById(id : string) {
         return this.bookModel.findOne({_id : id}).populate('author')
+    }
+
+    async deleteBookById(id : string) {
+        await this.bookModel.deleteOne({_id : id});
     }
 
 
