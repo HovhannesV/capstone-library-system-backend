@@ -1,10 +1,10 @@
 import {
     Body,
     Controller, Get, Param,
-    Post,
+    Post, Put,
     SetMetadata,
 } from '@nestjs/common';
-import {BookService, CreateBookPayload} from "./book.service";
+import {BookService, CreateBookPayload, UpdateBookPayload} from "./book.service";
 
 import * as _ from 'lodash'
 
@@ -19,6 +19,29 @@ export class BookController {
     @SetMetadata('roles', ['admin'])
     async createBook(@Body() payload : CreateBookPayload) {
         const book = await this.bookService.createBook(payload);
+        return {
+            status : 'success',
+            response : {
+                ..._.pick(
+                    book,
+                    'id',
+                    'description',
+                    'author',
+                    'title',
+                    'coverImageId',
+                    'publishDate',
+                    'fileId'
+                ),
+                instances : []
+            }
+        }
+    }
+
+
+    @Put('/:id')
+    @SetMetadata('roles', ['admin'])
+    async updateBookById(@Body() payload : UpdateBookPayload, @Param('id') id : string) {
+        const book = await this.bookService.updateBookById(id, payload);
         return {
             status : 'success',
             response : {
