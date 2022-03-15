@@ -88,6 +88,8 @@ export class BookService {
             titleKeyword : BookService.extractKeywords(bookPayload.title),
             descriptionKeywords: BookService.extractKeywords(bookPayload.description),
             keywords: BookService.extractKeywords(author.name, bookPayload.title, bookPayload.description),
+            title : BookService.extractKeywords(bookPayload.title).join(' '),
+            description: BookService.extractKeywords(bookPayload.description).join(' '),
         })).toObject();
     }
 
