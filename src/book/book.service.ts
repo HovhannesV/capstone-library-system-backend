@@ -49,6 +49,7 @@ import * as _ from 'lodash'
 import {AuthorService} from "../author/author.service";
 import {CoverTypeService} from "../coverType/cover-type.service";
 import {GenreService} from "../genre/genre.service";
+import {extractKeywords} from "../utils";
 @Injectable()
 export class BookService {
 
@@ -84,12 +85,12 @@ export class BookService {
             ..._.omit(bookPayload, 'authorId'),
             author: bookPayload.authorId,
             favoritesCount: 0,
-            authorKeywords : BookService.extractKeywords(author.name),
-            titleKeyword : BookService.extractKeywords(bookPayload.title),
-            descriptionKeywords: BookService.extractKeywords(bookPayload.description),
-            keywords: BookService.extractKeywords(author.name, bookPayload.title, bookPayload.description),
-            title : BookService.extractKeywords(bookPayload.title).join(' '),
-            description: BookService.extractKeywords(bookPayload.description).join(' '),
+            authorKeywords : extractKeywords(author.name),
+            titleKeyword : extractKeywords(bookPayload.title),
+            descriptionKeywords: extractKeywords(bookPayload.description),
+            keywords: extractKeywords(author.name, bookPayload.title, bookPayload.description),
+            title : extractKeywords(bookPayload.title).join(' '),
+            description: extractKeywords(bookPayload.description).join(' '),
         })).toObject();
     }
 
@@ -97,10 +98,5 @@ export class BookService {
         return this.bookModel.findOne({_id : id}).populate('author')
     }
 
-    static extractKeywords(...strings) {
-        return strings.map(str => str.split(' ').map(s => s.trim()))
-            .reduce((result, strArray) => result.concat(strArray), [])
-            .filter(Boolean)
-    }
 
 }
