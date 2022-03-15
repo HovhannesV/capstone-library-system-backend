@@ -26,4 +26,9 @@ export class CoverTypeService {
                         .lean();
     }
 
+    async validateCoverType(coverType : string) {
+        const coverTypeFromDb = await this.coverTypeModel.findOne({ coverType });
+        return !!coverTypeFromDb;
+    }
+
 }

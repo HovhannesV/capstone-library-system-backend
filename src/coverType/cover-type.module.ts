@@ -8,7 +8,7 @@ import {CoverTypeController} from "./cover-type.controller";
 
 
 @Module({
-    exports: [],
+    exports: [ CoverTypeService ],
     controllers: [ CoverTypeController ],
     providers: [
         CoverTypeService

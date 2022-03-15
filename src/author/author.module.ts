@@ -8,7 +8,7 @@ import {AuthorController} from "./author.controller";
 
 
 @Module({
-    exports: [],
+    exports: [ AuthorService ],
     controllers: [ AuthorController ],
     providers: [
         AuthorService

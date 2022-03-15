@@ -8,7 +8,7 @@ import {GenreController} from "./genre.controller";
 
 
 @Module({
-    exports: [],
+    exports: [ GenreService ],
     controllers: [ GenreController ],
     providers: [
         GenreService

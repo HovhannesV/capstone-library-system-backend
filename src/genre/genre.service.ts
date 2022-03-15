@@ -25,4 +25,9 @@ export class GenreService {
                         .lean();
     }
 
+    async validateGenres(genres : string[]) {
+        const genresFromDb = await this.genreModel.find({ genre : { $in : genres } });
+        return genresFromDb.length === genres.length;
+    }
+
 }

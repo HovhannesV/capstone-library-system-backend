@@ -26,4 +26,9 @@ export class AuthorService {
                         .lean();
     }
 
+    async getAuthorById(id : string) {
+        return this.authorModel.findOne({_id : id}).lean();
+    }
+
+
 }
