@@ -38,7 +38,7 @@ export class BookInstanceController {
         await this.bookInstanceService.deleteBookInstance(id);
         return {
             status: 'success',
-            response: 'Book successfully deleted'
+            response: 'Book instance successfully deleted'
         }
     }
 

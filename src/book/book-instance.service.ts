@@ -55,16 +55,6 @@ export class BookInstanceService {
         });
     }
 
-
-    async getInstancesByBookId(bookId : string) {
-        const rawInstances = await this.bookInstanceModel.find({
-            bookId
-        })
-        .sort({ create_date : -1 });
-
-        return rawInstances.map(instance => _.pick(instance, 'bookId', 'coverType', 'id'))
-    }
-
     async deleteInstancesByBookId(bookId : string) {
         return this.bookInstanceModel.updateMany({
             bookId
@@ -74,6 +64,21 @@ export class BookInstanceService {
             }
         });
     }
+
+    async getInstancesByBookId(bookId : string) {
+        const rawInstances = await this.bookInstanceModel.find({
+            bookId,
+            deleted : false
+        }, {
+            coverType : 1,
+            id : 1
+        })
+        .sort({ create_date : -1 });
+
+        return rawInstances.map(instance => _.pick(instance, 'bookId', 'coverType', 'id'))
+    }
+
+
 
 
 }
