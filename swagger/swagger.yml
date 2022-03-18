@@ -19,6 +19,8 @@ paths:
               properties:
                 token:
                   type: string
+                fcmToken:
+                  type: string
       responses:
         200:
           description: success response
@@ -60,7 +62,7 @@ paths:
                   response:
                     type: string
                     enum: ['User has signed out']
-  /tokens:
+  /user/tokens:
     post:
       summary: endpoint for refreshing token
       tags:
@@ -89,7 +91,9 @@ paths:
                     properties:
                       token:
                         type: string
-  /users/me:
+                      refreshToken:
+                        type: string
+  /user:
     get:
       summary: "Endpoint for getting user info"
       tags:
@@ -464,9 +468,7 @@ paths:
                     type: string
                     enum: [ 'success' ]
                   response:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Book'
+                    $ref: '#/components/schemas/Book'
   /books/{id}/instances:
     post:
       summary: "Add book instance (admin)"
@@ -505,7 +507,7 @@ paths:
                         type: string
                       coverType:
                         type: string
-  /books/{id}/instances/{instanceId}:
+  /books/instances/{instanceId}:
     delete:
       summary: "Delete book instance (admin)"
       tags:
@@ -619,6 +621,8 @@ paths:
                           type: string
                         name:
                           type: string
+                        imageId:
+                          type: string
                   metadata:
                     type: object
                     properties:
@@ -657,6 +661,8 @@ paths:
                         id:
                           type: string
                         name:
+                          type: string
+                        imageId:
                           type: string
   /authors/{id}/books:
     get:
@@ -742,11 +748,9 @@ paths:
                     enum: [ 'success' ]
                   response:
                     type: object
-                    items:
-                      type: object
-                      properties:
-                        genre:
-                          type: string
+                    properties:
+                      genre:
+                        type: string
   /coverTypes:
     get:
       summary: "Browse coverTypes (admin)"
@@ -855,7 +859,12 @@ components:
         description:
           type: string
         author:
-          type: string
+          type: object
+          properties:
+            name:
+              type: string
+            imageId:
+              type: string
         title:
           type: string
         coverImageId:
@@ -881,6 +890,13 @@ components:
           format: Date
         fileId:
           type: string
+        genres:
+          type: array
+          items:
+            type: string
+        coverType:
+          type: string
+
     User:
       type: object
       properties:
