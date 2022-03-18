@@ -69,13 +69,10 @@ export class BookInstanceService {
         const rawInstances = await this.bookInstanceModel.find({
             bookId,
             deleted : false
-        }, {
-            coverType : 1,
-            id : 1
         })
         .sort({ create_date : -1 });
 
-        return rawInstances.map(instance => _.pick(instance, 'bookId', 'coverType', 'id'))
+        return rawInstances.map(instance => _.pick(instance,  'coverType', 'id'))
     }
 
 
