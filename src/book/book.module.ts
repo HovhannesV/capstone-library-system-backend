@@ -6,6 +6,9 @@ import {Book, BookSchema} from "./model/book";
 import {AuthorModule} from "../author/author.module";
 import {GenreModule} from "../genre/genre.module";
 import {CoverTypeModule} from "../coverType/cover-type.module";
+import {BookInstanceController} from "./book-instance.controller";
+import {BookInstanceService} from "./book-instance.service";
+import {BookInstance, BookInstanceSchema} from "./model/book-instance";
 
 
 
@@ -13,14 +16,21 @@ import {CoverTypeModule} from "../coverType/cover-type.module";
     exports: [
         BookService
     ],
-    controllers: [ BookController ],
+    controllers: [ BookController, BookInstanceController ],
     providers: [
         BookService,
+        BookInstanceService
     ],
     imports : [
         MongooseModule.forFeature(
             [
                 { name: Book.name, schema: BookSchema },
+            ],
+            'appDB',
+        ),
+        MongooseModule.forFeature(
+            [
+                { name: BookInstance.name, schema: BookInstanceSchema },
             ],
             'appDB',
         ),

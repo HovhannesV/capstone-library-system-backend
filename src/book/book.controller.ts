@@ -21,19 +21,7 @@ export class BookController {
         const book = await this.bookService.createBook(payload);
         return {
             status : 'success',
-            response : {
-                ..._.pick(
-                    book,
-                    'id',
-                    'description',
-                    'author',
-                    'title',
-                    'coverImageId',
-                    'publishDate',
-                    'fileId'
-                ),
-                instances : []
-            }
+            response : book
         }
     }
 
@@ -44,19 +32,7 @@ export class BookController {
         const book = await this.bookService.updateBookById(id, payload);
         return {
             status : 'success',
-            response : {
-                ..._.pick(
-                    book,
-                    'id',
-                    'description',
-                    'author',
-                    'title',
-                    'coverImageId',
-                    'publishDate',
-                    'fileId'
-                ),
-                instances : []
-            }
+            response : book
         }
     }
 
@@ -76,19 +52,7 @@ export class BookController {
         if(!book) throw new NotFoundException('Book not found');
         return {
             status : 'success',
-            response : {
-                ..._.pick(
-                    book,
-                    'id',
-                    'description',
-                    'author',
-                    'title',
-                    'coverImageId',
-                    'publishDate',
-                    'fileId'
-                ),
-                instances : []
-            }
+            response : book
         }
     }
 

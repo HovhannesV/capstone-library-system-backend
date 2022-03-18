@@ -48,9 +48,6 @@ export class Book {
     @Prop({ type: [{ type: String }], required: true })
     genres: string[]
 
-    @Prop({ type: String, required : true })
-    coverType: string
-
     @Prop({ type: String })
     fileId: string
 

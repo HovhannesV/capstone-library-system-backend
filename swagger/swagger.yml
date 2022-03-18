@@ -507,7 +507,7 @@ paths:
                         type: string
                       coverType:
                         type: string
-  /books/{id}/instances/{instanceId}:
+  /books/instances/{instanceId}:
     delete:
       summary: "Delete book instance (admin)"
       tags:

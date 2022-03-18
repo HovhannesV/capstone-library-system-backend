@@ -38,12 +38,6 @@ export class UpdateBookPayload {
     @IsNotEmpty()
     @Transform(({ value }: TransformFnParams) => value.trim())
     @IsOptional()
-    coverType?: string
-
-    @IsString()
-    @IsNotEmpty()
-    @Transform(({ value }: TransformFnParams) => value.trim())
-    @IsOptional()
     fileId?: string
 
     @IsString()
@@ -78,10 +72,6 @@ export class CreateBookPayload {
     @Transform(({ value }: TransformFnParams) => value.map(val => val.trim()))
     genres: string[]
 
-    @IsString()
-    @IsNotEmpty()
-    @Transform(({ value }: TransformFnParams) => value.trim())
-    coverType: string
 
     @IsString()
     @IsNotEmpty()
@@ -96,9 +86,11 @@ export class CreateBookPayload {
 
 import * as _ from 'lodash'
 import {AuthorService} from "../author/author.service";
-import {CoverTypeService} from "../coverType/cover-type.service";
 import {GenreService} from "../genre/genre.service";
 import {extractKeywords} from "../utils";
+import {BookInstanceService} from "./book-instance.service";
+
+
 @Injectable()
 export class BookService {
 
@@ -108,18 +100,14 @@ export class BookService {
     @Inject(AuthorService)
     private authorService : AuthorService
 
-    @Inject(CoverTypeService)
-    private coverTypeService : CoverTypeService
-
     @Inject(GenreService)
     private genreService : GenreService
 
+    @Inject(BookInstanceService)
+    private bookInstanceService : BookInstanceService
+
 
     async createBook(bookPayload : CreateBookPayload) {
-        if(!await this.coverTypeService.validateCoverType(bookPayload.coverType)) {
-            throw new BadRequestException('Not valid cover type provided');
-        }
-
         if(!await this.genreService.validateGenres(bookPayload.genres)) {
             throw new BadRequestException('Not valid genres provided');
         }
@@ -130,7 +118,7 @@ export class BookService {
             throw new BadRequestException('Not valid author id provided');
         }
 
-        return (await this.bookModel.create({
+        const book = (await this.bookModel.create({
             ..._.omit(bookPayload, 'authorId'),
             author: bookPayload.authorId,
             favoritesCount: 0,
@@ -141,13 +129,12 @@ export class BookService {
             title : extractKeywords(bookPayload.title).join(' '),
             description: extractKeywords(bookPayload.description).join(' '),
         })).toObject();
+
+
+        return this.getBookRepresentation(book);
     }
 
-
     async updateBookById(id : string, bookPayload : UpdateBookPayload) {
-        if('coverType' in bookPayload && !await this.coverTypeService.validateCoverType(bookPayload.coverType)) {
-            throw new BadRequestException('Not valid cover type provided');
-        }
 
         if('genres' in bookPayload && !await this.genreService.validateGenres(bookPayload.genres)) {
             throw new BadRequestException('Not valid genres provided');
@@ -179,16 +166,34 @@ export class BookService {
 
         await book.save();
 
-        return book.toObject();
+
+        return this.getBookRepresentation(book.toObject());
     }
 
     async findBookById(id : string) {
-        return this.bookModel.findOne({_id : id}).populate('author')
+        const book = await this.bookModel.findOne({_id : id}).populate('author')
+        return this.getBookRepresentation(book);
     }
 
     async deleteBookById(id : string) {
         await this.bookModel.deleteOne({_id : id});
+        await this.bookInstanceService.deleteInstancesByBookId(id);
     }
 
-
+    private async getBookRepresentation(book) {
+        const instances = await this.bookInstanceService.getInstancesByBookId(book.id);
+        return {
+            ..._.pick(
+                book,
+                'id',
+                'description',
+                'author',
+                'title',
+                'coverImageId',
+                'publishDate',
+                'fileId'
+            ),
+            instances
+        }
+    }
 }
