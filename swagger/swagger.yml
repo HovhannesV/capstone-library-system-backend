@@ -236,6 +236,31 @@ paths:
                   response:
                     type: string
                     enum: ['Book has been added to favorites']
+    delete:
+      summary: "Delete book from favorites"
+      tags:
+        - books
+      security:
+        - KeyAuth: [ ]
+      parameters:
+        - in: query
+          name: bookId
+          schema:
+            type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: string
+                    enum: [ 'Book has been removed from favorites' ]
 
   /borrows:
     get:
