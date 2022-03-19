@@ -9,6 +9,7 @@ import {BookService, CreateBookPayload, UpdateBookPayload} from "./book.service"
 
 
 import {CreateBookInstancePayload, BookInstanceService} from "./book-instance.service";
+import {Role} from "../user/model/user";
 
 @Controller("/books")
 export class BookInstanceController {
@@ -19,7 +20,7 @@ export class BookInstanceController {
 
 
     @Post('/:id/instances')
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async createBook(@Param('id') bookId, @Body() payload : CreateBookInstancePayload) {
         if(!await this.bookService.findBookById(bookId)) {
             throw new BadRequestException("Book with given id does not exist");
@@ -33,7 +34,7 @@ export class BookInstanceController {
 
 
     @Delete('/instances/:id')
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async deleteBookById(@Param('id') id : string) {
         await this.bookInstanceService.deleteBookInstance(id);
         return {

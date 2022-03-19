@@ -7,6 +7,7 @@ import {
 import {UserService} from "./user.service";
 import {Reflector} from "@nestjs/core";
 import * as jwt from 'jsonwebtoken'
+import {Role} from "./model/user";
 
 
 
@@ -31,7 +32,7 @@ export class AuthGuard implements CanActivate {
         try {
             const { role, id } = jwt.verify(authToken, this.jwtSecret);
 
-            const roles = this.reflector.get<string>('roles', context.getHandler()) || ['user', 'admin']
+            const roles = this.reflector.get<string>('roles', context.getHandler()) || [Role.USER, Role.ADMIN]
 
             if(!roles.includes(role)) throw new BadRequestException('The endpoint is not designed for the role');
 

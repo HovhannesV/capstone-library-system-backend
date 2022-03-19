@@ -13,6 +13,7 @@ import {v4} from 'uuid'
 import * as fs from "fs";
 
 import * as mime from 'mime-types';
+import {Role} from "../user/model/user";
 
 @Controller("/icons")
 export class FileController {
@@ -26,7 +27,7 @@ export class FileController {
             }
         })
     }))
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async uploadFile(@UploadedFile() file: Express.Multer.File,
                      @Headers('user_id') adminId) {
         const iconId = await this.iconService.uploadIcon(file.path);
@@ -37,7 +38,6 @@ export class FileController {
     }
 
     @Get('/:iconId')
-    @SetMetadata('auth', 'none')
     async getFile(@Param('iconId') iconId, @Res() res) {
         res.set({
             'Content-Type': mime.lookup(iconId.split('.').reverse()[0])

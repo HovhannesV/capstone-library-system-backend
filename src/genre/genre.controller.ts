@@ -6,6 +6,7 @@ import {GenreService} from "./genre.service";
 import {IsString} from "class-validator";
 import * as _ from 'lodash'
 import {Transform, TransformFnParams} from "class-transformer";
+import {Role} from "../user/model/user";
 
 class GenrePayload {
     @IsString()
@@ -22,7 +23,7 @@ export class GenreController {
     ) {}
 
     @Post('/')
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async addGenre(@Body() genrePayload : GenrePayload) {
         const genre = await this.genreService.createGenre(genrePayload.genre);
         return {
@@ -32,7 +33,7 @@ export class GenreController {
     }
 
     @Get('/')
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async getGenres(@Query('offset', new DefaultValuePipe(0)) offset : number,
                      @Query('limit', new DefaultValuePipe(60)) limit : number) {
 

@@ -3,6 +3,11 @@ import * as mongoose from 'mongoose';
 
 export type UserDocument = User & mongoose.Document;
 
+export enum Role {
+    ADMIN = 'admin',
+    USER = 'user'
+}
+
 @Schema({})
 export class Session {
     @Prop({ type: String, required : true })
@@ -36,7 +41,7 @@ export class User {
     profileImageUrl: string;
 
     @Prop({ type: String, enum: ['admin', 'user'], required : true })
-    role: string
+    role: Role
 
     @Prop({ type: [SessionSchema], required : true })
     sessions : Session[]

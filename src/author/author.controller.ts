@@ -7,6 +7,7 @@ import {IsString} from "class-validator";
 import * as _ from 'lodash'
 import {auth} from "google-auth-library";
 import {Transform, TransformFnParams} from "class-transformer";
+import {Role} from "../user/model/user";
 
 class AuthorPayload {
     @IsString()
@@ -27,7 +28,7 @@ export class AuthorController {
     ) {}
 
     @Post('/')
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async addAuthor(@Body() authorPayload : AuthorPayload) {
         const author = await this.authorService.createAuthor(authorPayload.name, authorPayload.imageId);
         return {
@@ -37,7 +38,7 @@ export class AuthorController {
     }
 
     @Get('/')
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async getAuthors(@Query('offset', new DefaultValuePipe(0)) offset : number,
                      @Query('limit', new DefaultValuePipe(60)) limit : number) {
 

@@ -6,6 +6,7 @@ import {CoverTypeService} from "./cover-type.service";
 import {IsString} from "class-validator";
 import * as _ from 'lodash'
 import {Transform, TransformFnParams} from "class-transformer";
+import {Role} from "../user/model/user";
 
 class CoverTypePayload {
     @IsString()
@@ -22,7 +23,7 @@ export class CoverTypeController {
     ) {}
 
     @Post('/')
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async addCoverType(@Body() genrePayload : CoverTypePayload) {
         const coverType = await this.coverTypeService.createCoverType(genrePayload.coverType);
         return {

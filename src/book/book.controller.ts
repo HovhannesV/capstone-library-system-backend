@@ -7,6 +7,7 @@ import {
 import {BookService, CreateBookPayload, UpdateBookPayload} from "./book.service";
 
 import * as _ from 'lodash'
+import {Role} from "../user/model/user";
 
 @Controller("/books")
 export class BookController {
@@ -16,7 +17,7 @@ export class BookController {
 
 
     @Post('/')
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async createBook(@Body() payload : CreateBookPayload) {
         const book = await this.bookService.createBook(payload);
         return {
@@ -27,7 +28,7 @@ export class BookController {
 
 
     @Put('/:id')
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async updateBookById(@Body() payload : UpdateBookPayload, @Param('id') id : string) {
         const book = await this.bookService.updateBookById(id, payload);
         return {
@@ -37,7 +38,7 @@ export class BookController {
     }
 
     @Delete('/:id')
-    @SetMetadata('roles', ['admin'])
+    @SetMetadata('roles', [Role.ADMIN])
     async deleteBookById(@Param('id') id : string) {
         await this.bookService.deleteBookById(id);
         return {
