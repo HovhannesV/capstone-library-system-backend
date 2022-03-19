@@ -93,7 +93,7 @@ paths:
                   response:
                     type: string
                     enum: [ 'User session updated' ]
-  /user/user/tokens:
+  /user/tokens:
     post:
       summary: endpoint for refreshing token
       tags:
