@@ -62,7 +62,38 @@ paths:
                   response:
                     type: string
                     enum: ['User has signed out']
-  /user/tokens:
+    put:
+      summary: updates session
+      tags:
+        - users
+      parameters:
+        - in: query
+          name: refreshToken
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fcmToken:
+                  type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: string
+                    enum: [ 'User session updated' ]
+  /user/user/tokens:
     post:
       summary: endpoint for refreshing token
       tags:
