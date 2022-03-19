@@ -51,9 +51,21 @@ export class UserService {
         return user.toObject();
     }
 
+    async updateUserSession(refreshToken : string, updatePayload : { fcmToken : string }) {
+        const {matchedCount} = await this.userModel.updateOne({
+            'sessions.refreshToken' : refreshToken
+        }, {
+            $set : {
+                'sessions.$.fcmToken' : updatePayload.fcmToken
+            }
+        });
+        if(matchedCount === 0) {
+            throw new BadRequestException("Session with given refresh token does not exist");
+        }
+    }
 
     async removeSession(refreshToken : string) {
-        await this.userModel.updateOne({
+        const {matchedCount} = await this.userModel.updateOne({
             'sessions.refreshToken' : refreshToken
         }, {
             $pull : {
@@ -62,6 +74,9 @@ export class UserService {
                 }
             }
         });
+        if(matchedCount === 0) {
+            throw new BadRequestException("Session with given refresh token does not exist");
+        }
     }
 
     async getUserByEmail(email : string) {

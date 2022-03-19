@@ -1,6 +1,6 @@
 import {
     Body,
-    Controller, Delete, Get, Headers, Inject, Post, Query, SetMetadata,
+    Controller, Delete, Get, Headers, Inject, Post, Put, Query, SetMetadata,
 } from '@nestjs/common';
 import {UserService} from "./user.service";
 import * as _ from 'lodash'
@@ -19,6 +19,11 @@ class CreateSessionPayload {
     @IsString()
     token : string
 
+    @IsString()
+    fcmToken: string
+}
+
+class UpdateSessionPayload {
     @IsString()
     fcmToken: string
 }
@@ -65,6 +70,16 @@ export class UserController {
         return {
             status : 'success',
             response : 'User has signed out'
+        };
+    }
+
+    @Put('/sessions')
+    @SetMetadata('auth', 'none')
+    async updateSession(@Query('refreshToken') refreshToken : string, @Body() body : UpdateSessionPayload) {
+        await this.userService.updateUserSession(refreshToken, body);
+        return {
+            status : 'success',
+            response : 'User session has been updated'
         };
     }
 

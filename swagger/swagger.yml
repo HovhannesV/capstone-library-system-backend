@@ -92,7 +92,7 @@ paths:
                     enum: [ 'success' ]
                   response:
                     type: string
-                    enum: [ 'User session updated' ]
+                    enum: [ 'User session has been updated' ]
   /user/tokens:
     post:
       summary: endpoint for refreshing token
