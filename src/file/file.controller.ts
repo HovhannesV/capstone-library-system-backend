@@ -38,6 +38,7 @@ export class FileController {
     }
 
     @Get('/:iconId')
+    @SetMetadata('auth', 'none')
     async getFile(@Param('iconId') iconId, @Res() res) {
         res.set({
             'Content-Type': mime.lookup(iconId.split('.').reverse()[0])

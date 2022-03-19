@@ -48,6 +48,7 @@ export class UserController {
     }
 
     @Post('/tokens')
+    @SetMetadata('auth', 'none')
     async getToken(@Body() payload : CreateAccessTokenPayload) {
         const user = await this.userService.getByRefreshToken(payload.refreshToken);
 
@@ -63,6 +64,7 @@ export class UserController {
 
 
     @Delete('/sessions')
+    @SetMetadata('auth', 'none')
     async deleteSession(@Query('refreshToken') refreshToken : string) {
         await this.userService.removeSession(refreshToken);
         return {
@@ -72,6 +74,7 @@ export class UserController {
     }
 
     @Put('/sessions')
+    @SetMetadata('auth', 'none')
     async updateSession(@Query('refreshToken') refreshToken : string, @Body() body : UpdateSessionPayload) {
         await this.userService.updateUserSession(refreshToken, body);
         return {
@@ -81,6 +84,7 @@ export class UserController {
     }
 
     @Post('/sessions')
+    @SetMetadata('auth', 'none')
     async createSession(@Body() body : CreateSessionPayload) {
         const userInfo = await this.googleAccountService.getUserInfo(body.token);
 

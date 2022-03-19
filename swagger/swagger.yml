@@ -180,13 +180,22 @@ paths:
                             type: string
                           mostFavoriteBooksNextPage:
                             type: string
-  /books/favorite:
+  /books/favorites:
     get:
       summary: "Favorite books endpoint for user"
       tags:
         - books
       security:
         - KeyAuth: [ ]
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: number
+        - in: query
+          name: limit
+          schema:
+            type: number
       responses:
         200:
           description: success response
@@ -207,7 +216,6 @@ paths:
                     properties:
                       nextPage:
                         type: string
-  /books/favorites:
     post:
       summary: "Adds book to favorites"
       tags:
@@ -220,7 +228,7 @@ paths:
             schema:
               type: object
               properties:
-                book_id:
+                bookId:
                   type: string
       responses:
         200:

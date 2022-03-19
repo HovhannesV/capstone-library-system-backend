@@ -4,6 +4,7 @@ import {Book, BookDocument} from "./model/book";
 import {Model} from "mongoose";
 import {IsArray, IsDate, IsDateString, IsNotEmpty, IsOptional, IsString} from "class-validator";
 import {Transform, TransformFnParams, Type} from "class-transformer";
+import * as Promise from 'bluebird'
 
 export class UpdateBookPayload {
     @IsString()
@@ -171,8 +172,15 @@ export class BookService {
     }
 
     async findBookById(id : string) {
-        const book = await this.bookModel.findOne({_id : id}).populate('author')
-        return this.getBookRepresentation(book);
+        return (await this.findBooksByIds([id]))[0];
+    }
+
+    async findBooksByIds(ids : string[]) {
+        const books = await this.bookModel.find({_id : { $in : ids }}).populate('author')
+
+        const orderedBooks = ids.map(id => books.find(book => book.id === id) || null);
+
+        return Promise.all(orderedBooks.map(book => this.getBookRepresentation(book)));
     }
 
     async deleteBookById(id : string) {

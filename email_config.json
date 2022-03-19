@@ -3,6 +3,6 @@
     "edu.aua.am"
   ],
   "adminEmailPatterns" : [
-      ".*alisa.*"
+      ".*alisa_no.*"
   ]
 }

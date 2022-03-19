@@ -9,6 +9,9 @@ import {CoverTypeModule} from "../coverType/cover-type.module";
 import {BookInstanceController} from "./book-instance.controller";
 import {BookInstanceService} from "./book-instance.service";
 import {BookInstance, BookInstanceSchema} from "./model/book-instance";
+import {FavoriteBooksController} from "./favorite-books.controller";
+import {FavoriteBooksService} from "./favorite-books-service";
+import {UserFavoriteBooks, UserFavoriteBooksSchema} from "./model/user-favorite-books";
 
 
 
@@ -16,10 +19,11 @@ import {BookInstance, BookInstanceSchema} from "./model/book-instance";
     exports: [
         BookService
     ],
-    controllers: [ BookController, BookInstanceController ],
+    controllers: [ FavoriteBooksController, BookController, BookInstanceController ],
     providers: [
         BookService,
-        BookInstanceService
+        BookInstanceService,
+        FavoriteBooksService
     ],
     imports : [
         MongooseModule.forFeature(
@@ -31,6 +35,12 @@ import {BookInstance, BookInstanceSchema} from "./model/book-instance";
         MongooseModule.forFeature(
             [
                 { name: BookInstance.name, schema: BookInstanceSchema },
+            ],
+            'appDB',
+        ),
+        MongooseModule.forFeature(
+            [
+                { name: UserFavoriteBooks.name, schema: UserFavoriteBooksSchema },
             ],
             'appDB',
         ),
