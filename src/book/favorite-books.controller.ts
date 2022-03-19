@@ -31,10 +31,10 @@ export class FavoriteBooksController {
         @Query('limit', new DefaultValuePipe(60)) limit : number
     ) {
         const bookIds = await this.favoriteBooksService.getFavoriteBookIdsOfUser(userId, offset, limit);
-        console.log(await this.bookService.findBooksByIds(bookIds))
+        console.log(await this.bookService.findBooksByIds(bookIds, userId))
         return {
             status : 'success',
-            response : await this.bookService.findBooksByIds(bookIds),
+            response : await this.bookService.findBooksByIds(bookIds, userId),
             metadata : {
                 nextPage: `/books/favorite?offset=${offset}&limit=${limit}`
             }
@@ -47,8 +47,7 @@ export class FavoriteBooksController {
         @Body() {bookId} : AddToFavoritesPayload,
         @Headers('user_id') userId
     ) {
-        console.log(' dfgddddddddddd 1');
-        if(!await this.bookService.findBookById(bookId)) {
+        if(!await this.bookService.findBookById(bookId, userId)) {
             throw new BadRequestException("Book does not exist");
         }
 

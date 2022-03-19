@@ -90,6 +90,7 @@ import {AuthorService} from "../author/author.service";
 import {GenreService} from "../genre/genre.service";
 import {extractKeywords} from "../utils";
 import {BookInstanceService} from "./book-instance.service";
+import {FavoriteBooksService} from "./favorite-books-service";
 
 
 @Injectable()
@@ -106,6 +107,9 @@ export class BookService {
 
     @Inject(BookInstanceService)
     private bookInstanceService : BookInstanceService
+
+    @Inject(FavoriteBooksService)
+    private favoriteBookService : FavoriteBooksService
 
 
     async createBook(bookPayload : CreateBookPayload) {
@@ -171,16 +175,16 @@ export class BookService {
         return this.getBookRepresentation(book.toObject());
     }
 
-    async findBookById(id : string) {
-        return (await this.findBooksByIds([id]))[0];
+    async findBookById(id : string, userId : string) {
+        return (await this.findBooksByIds([id], userId))[0];
     }
 
-    async findBooksByIds(ids : string[]) {
+    async findBooksByIds(ids : string[], userId : string) {
         const books = await this.bookModel.find({_id : { $in : ids }}).populate('author')
 
         const orderedBooks = ids.map(id => books.find(book => book.id === id) || null);
 
-        return Promise.all(orderedBooks.map(book => this.getBookRepresentation(book)));
+        return Promise.all(orderedBooks.map(book => this.getBookRepresentation(book, userId)));
     }
 
     async deleteBookById(id : string) {
@@ -188,7 +192,7 @@ export class BookService {
         await this.bookInstanceService.deleteInstancesByBookId(id);
     }
 
-    private async getBookRepresentation(book) {
+    private async getBookRepresentation(book, userId ?: string) {
         const instances = await this.bookInstanceService.getInstancesByBookId(book.id);
         return {
             ..._.pick(
@@ -201,7 +205,8 @@ export class BookService {
                 'publishDate',
                 'fileId'
             ),
-            instances
+            instances,
+            isFavorite : userId ? await this.favoriteBookService.isMarkedFavorite(userId, book.id) : undefined
         }
     }
 }

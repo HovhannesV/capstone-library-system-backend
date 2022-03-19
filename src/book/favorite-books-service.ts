@@ -37,6 +37,13 @@ export class FavoriteBooksService {
         return favorites.map(favorite => favorite.bookId);
     }
 
+    async isMarkedFavorite(userId : string, bookId : string) {
+        return !!(await this.userFavoriteBooks.findOne({
+            userId,
+            bookId
+        }));
+    }
+
 
 
 

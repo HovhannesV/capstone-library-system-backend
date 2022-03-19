@@ -1,7 +1,7 @@
 import {
     BadRequestException,
     Body,
-    Controller, Delete, Get, NotFoundException, Param,
+    Controller, Delete, Get, Headers, NotFoundException, Param,
     Post, Put,
     SetMetadata,
 } from '@nestjs/common';
@@ -21,8 +21,8 @@ export class BookInstanceController {
 
     @Post('/:id/instances')
     @SetMetadata('roles', [Role.ADMIN])
-    async createBook(@Param('id') bookId, @Body() payload : CreateBookInstancePayload) {
-        if(!await this.bookService.findBookById(bookId)) {
+    async createBook(@Param('id') bookId, @Body() payload : CreateBookInstancePayload, @Headers('user_id') userId) {
+        if(!await this.bookService.findBookById(bookId, userId)) {
             throw new BadRequestException("Book with given id does not exist");
         }
         const bookInstance = await this.bookInstanceService.createBookInstance(bookId, payload);

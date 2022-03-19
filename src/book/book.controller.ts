@@ -1,6 +1,6 @@
 import {
     Body,
-    Controller, Delete, Get, NotFoundException, Param,
+    Controller, Delete, Get, Head, Headers, NotFoundException, Param,
     Post, Put,
     SetMetadata,
 } from '@nestjs/common';
@@ -48,8 +48,8 @@ export class BookController {
     }
 
     @Get('/:id')
-    async getBookId(@Param('id') id : string) {
-        const book = await this.bookService.findBookById(id);
+    async getBookId(@Param('id') id : string, @Headers('user_id') userId) {
+        const book = await this.bookService.findBookById(id, userId);
         if(!book) throw new NotFoundException('Book not found');
         return {
             status : 'success',
