@@ -1,4 +1,4 @@
-import {BadRequestException, Inject, Injectable, NotFoundException} from "@nestjs/common";
+import {BadRequestException, forwardRef, Inject, Injectable, NotFoundException} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {IsArray, IsDate, IsDateString, IsNotEmpty, IsOptional, IsString} from "class-validator";
@@ -28,10 +28,10 @@ export class BorrowService {
     @InjectModel(Borrow.name)
     private borrowModel : Model<BorrowDocument>
 
-    @Inject(BookService)
+    @Inject(forwardRef(() => BookService))
     private bookService : BookService
 
-    @Inject(BookInstanceService)
+    @Inject(forwardRef(() => BookInstanceService))
     private bookInstanceService : BookInstanceService
 
     async createBorrow(

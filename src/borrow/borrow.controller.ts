@@ -1,13 +1,12 @@
 import {
     BadRequestException,
     Body,
-    Controller, DefaultValuePipe, Delete, Get, Headers, Inject, NotFoundException, Param, ParseIntPipe,
+    Controller, DefaultValuePipe, Delete, forwardRef, Get, Headers, Inject, NotFoundException, Param, ParseIntPipe,
     Post, Put, Query,
     SetMetadata,
 } from '@nestjs/common';
 import {Role} from "../user/model/user";
 import {BorrowService, UpdateBorrowPayload} from "./borrow.service";
-import {BookService} from "../book/book.service";
 import {BookInstanceService} from "../book/book-instance.service";
 import {UserService} from "../user/user.service";
 import {IsDateString, IsNotEmpty, IsString} from "class-validator";
@@ -32,9 +31,13 @@ export class CreateBorrowPayload {
 
 @Controller("/borrows")
 export class BorrowController {
+
+
+    @Inject(forwardRef(() => BookInstanceService))
+    private readonly bookInstanceService : BookInstanceService
+
     constructor(
         private readonly borrowService : BorrowService,
-        private readonly bookInstanceService : BookInstanceService,
         private readonly userService : UserService
     ) {}
 
@@ -66,7 +69,7 @@ export class BorrowController {
             throw new BadRequestException("Book instance with given does not exist");
         }
         const user = await this.userService.getUserByEmail(body.userEmail);
-        if(!user) {
+        if(!user || user.role !== Role.USER) {
             throw new BadRequestException("Book instance with given does not exist");
         }
         const borrow = await this.borrowService.createBorrow({

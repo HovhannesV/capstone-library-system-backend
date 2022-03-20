@@ -18,7 +18,8 @@ import {BorrowModule} from "../borrow/borrow.module";
 
 @Module({
     exports: [
-        BookService
+        BookService,
+        BookInstanceService
     ],
     controllers: [ FavoriteBooksController, BookController, BookInstanceController ],
     providers: [

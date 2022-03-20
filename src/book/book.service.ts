@@ -1,4 +1,4 @@
-import {BadRequestException, Inject, Injectable, NotFoundException} from "@nestjs/common";
+import {BadRequestException, forwardRef, Inject, Injectable, NotFoundException} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import {Book, BookDocument} from "./model/book";
 import {Model} from "mongoose";
@@ -125,7 +125,7 @@ export class BookService {
     @Inject(FavoriteBooksService)
     private favoriteBookService : FavoriteBooksService
 
-    @Inject(BorrowService)
+    @Inject(forwardRef(() => BorrowService))
     private borrowService : BorrowService
 
 
