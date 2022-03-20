@@ -106,6 +106,7 @@ import {BookInstanceService} from "./book-instance.service";
 import {FavoriteBooksService} from "./favorite-books-service";
 import * as natural from 'natural'
 import {BorrowService} from "../borrow/borrow.service";
+import {FileService} from "../file/file.service";
 
 @Injectable()
 export class BookService {
@@ -127,6 +128,9 @@ export class BookService {
 
     @Inject(BorrowService)
     private borrowService : BorrowService
+
+    @Inject(FileService)
+    private fileService : FileService
 
 
     async createBook(bookPayload : CreateBookPayload) {
@@ -192,11 +196,11 @@ export class BookService {
         return this.getBookRepresentation(book.toObject());
     }
 
-    async findBookById(id : string, userId : string) {
+    async findBookById(id : string, userId ?: string) {
         return (await this.findBooksByIds([id], userId))[0];
     }
 
-    async findBooksByIds(ids : string[], userId : string) {
+    async findBooksByIds(ids : string[], userId ?: string) {
         const books = await this.bookModel.find({_id : { $in : ids }}).populate('author')
 
         const orderedBooks = ids.map(id => books.find(book => book.id === id) || null);
@@ -242,8 +246,16 @@ export class BookService {
 
 
     async deleteBookById(id : string) {
+        const book = await this.findBookById(id);
+        if(!book) throw new BadRequestException("Book does not exist");
+
         await this.bookModel.deleteOne({_id : id});
         await this.bookInstanceService.deleteInstancesByBookId(id);
+
+        if(book.fileId)  {
+            await this.fileService.deleteFile(book.fileId);
+        }
+        await this.fileService.deleteFile(book.coverImageId);
     }
 
     private async getBookRepresentation(book, userId ?: string) {

@@ -13,6 +13,7 @@ import {FavoriteBooksController} from "./favorite-books.controller";
 import {FavoriteBooksService} from "./favorite-books-service";
 import {UserFavoriteBooks, UserFavoriteBooksSchema} from "./model/user-favorite-books";
 import {BorrowCoreModule} from "../borrow/borrow-core.module";
+import {FileModule} from "../file/file.module";
 
 
 
@@ -49,7 +50,8 @@ import {BorrowCoreModule} from "../borrow/borrow-core.module";
         AuthorModule,
         GenreModule,
         CoverTypeModule,
-        BorrowCoreModule
+        BorrowCoreModule,
+        FileModule
     ]
 })
 export class BookModule {}
