@@ -85,6 +85,19 @@ export class CreateBookPayload {
     authorId: string;
 }
 
+export enum SORT {
+    CREATE_DATE = 'createDate',
+    FAVORITES_COUNT = 'favoritesCount',
+    PUBLISH_DATE = 'publishDate',
+}
+
+export enum PARAM {
+    AUTHOR = 'author',
+    TITLE = 'title',
+    DESCRIPTION = 'description',
+    ALL = 'all'
+}
+
 import * as _ from 'lodash'
 import {AuthorService} from "../author/author.service";
 import {GenreService} from "../genre/genre.service";
@@ -128,7 +141,7 @@ export class BookService {
             author: bookPayload.authorId,
             favoritesCount: 0,
             authorKeywords : extractKeywords(author.name),
-            titleKeyword : extractKeywords(bookPayload.title),
+            titleKeywords : extractKeywords(bookPayload.title),
             descriptionKeywords: extractKeywords(bookPayload.description),
             keywords: extractKeywords(author.name, bookPayload.title, bookPayload.description),
             title : extractKeywords(bookPayload.title).join(' '),
@@ -198,9 +211,27 @@ export class BookService {
 
     async getLatestBooks(offset : number, limit : number, userId : string) {
         const books = await this.bookModel.find({})
-            .sort({ create_date : -1 })
+            .sort({ createDate : -1 })
             .skip(offset)
             .limit(limit);
+
+        return Promise.all(books.map(book => this.getBookRepresentation(book, userId)));
+    }
+
+    async browseBooks(
+        keywords : string[],
+        param : PARAM, sort : SORT, descending : boolean,
+        offset : number, limit : number,
+        userId : string
+    ) {
+        const books = await this.bookModel.find({
+            [param === PARAM.ALL ? 'keywords' : `${param}Keywords`] : {
+                $all : keywords
+            }
+        })
+        .sort({ [sort] : descending ? -1 : 1 })
+        .skip(offset)
+        .limit(limit);
 
         return Promise.all(books.map(book => this.getBookRepresentation(book, userId)));
     }
@@ -212,6 +243,7 @@ export class BookService {
     }
 
     private async getBookRepresentation(book, userId ?: string) {
+        if(!book) return book;
         const instances = await this.bookInstanceService.getInstancesByBookId(book.id);
         return {
             ..._.pick(

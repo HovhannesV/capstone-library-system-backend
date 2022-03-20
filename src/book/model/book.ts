@@ -8,8 +8,8 @@ export type BookDocument = Book & mongoose.Document;
 
 @Schema({
     timestamps: {
-        createdAt: 'create_date',
-        updatedAt: 'update_date',
+        createdAt: 'createDate',
+        updatedAt: 'updateDate',
     },
     toObject: {
         getters: true,
@@ -55,10 +55,10 @@ export class Book {
     author: string;
 
     @Prop({ index : true })
-    create_date: Date;
+    createDate: Date;
 
     @Prop()
-    update_date: Date;
+    updateDate: Date;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

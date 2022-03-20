@@ -1,10 +1,22 @@
 import {
     Body,
-    Controller, Delete, Get, Head, Headers, NotFoundException, Param,
-    Post, Put,
+    Controller,
+    DefaultValuePipe,
+    Delete,
+    Get,
+    Head,
+    Headers,
+    NotFoundException,
+    Param,
+    ParseArrayPipe,
+    ParseBoolPipe,
+    ParseEnumPipe, ParseIntPipe,
+    Post,
+    Put,
+    Query,
     SetMetadata,
 } from '@nestjs/common';
-import {BookService, CreateBookPayload, UpdateBookPayload} from "./book.service";
+import {BookService, CreateBookPayload, PARAM, SORT, UpdateBookPayload} from "./book.service";
 
 import * as _ from 'lodash'
 import {Role} from "../user/model/user";
@@ -68,6 +80,30 @@ export class BookController {
         return {
             status : 'success',
             response : book
+        }
+    }
+
+
+    @Get('/')
+    async browseBooks(
+        @Query('keywords', new ParseArrayPipe({items : String})) keywords : string[],
+        @Query('param', new DefaultValuePipe(PARAM.ALL), new ParseEnumPipe(PARAM)) param : PARAM,
+        @Query('sort', new DefaultValuePipe(SORT.CREATE_DATE), new ParseEnumPipe(SORT)) sort : SORT,
+        @Query('descending' , new DefaultValuePipe(true), new ParseBoolPipe()) descending : boolean,
+        @Query('offset' , new DefaultValuePipe(0), new ParseIntPipe()) offset : number,
+        @Query('limit' , new DefaultValuePipe(60), new ParseIntPipe()) limit : number,
+        @Headers('user_id') userId
+    ) {
+        const books = await this.bookService.browseBooks(keywords, param, sort, descending, offset, limit, userId);
+
+        const nextPage = `/books?keywords=${keywords},param=${param},sort=${sort},descending=${descending},offset=${offset + limit},limit=${limit}`;
+
+        return {
+            status : 'success',
+            response : books,
+            metadata : {
+                nextPage : books.length === limit ? nextPage : undefined
+            }
         }
     }
 

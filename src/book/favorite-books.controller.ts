@@ -36,7 +36,7 @@ export class FavoriteBooksController {
             status : 'success',
             response : await this.bookService.findBooksByIds(bookIds, userId),
             metadata : {
-                nextPage: `/books/favorite?offset=${offset}&limit=${limit}`
+                nextPage: `/books/favorite?offset=${offset + limit}&limit=${limit}`
             }
         }
     }

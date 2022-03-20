@@ -487,6 +487,10 @@ paths:
           name: sort
           schema:
             type: string
+        - in: query
+          name: descending
+          schema:
+            type: boolean
       responses:
         200:
           description: success response
