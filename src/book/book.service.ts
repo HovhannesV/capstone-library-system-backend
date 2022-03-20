@@ -191,8 +191,7 @@ export class BookService {
         const books = await this.bookModel.find({})
             .sort({ favoritesCount : -1 })
             .skip(offset)
-            .limit(limit)
-            .lean();
+            .limit(limit);
 
         return Promise.all(books.map(book => this.getBookRepresentation(book, userId)));
     }
@@ -201,8 +200,7 @@ export class BookService {
         const books = await this.bookModel.find({})
             .sort({ create_date : -1 })
             .skip(offset)
-            .limit(limit)
-            .lean();
+            .limit(limit);
 
         return Promise.all(books.map(book => this.getBookRepresentation(book, userId)));
     }
