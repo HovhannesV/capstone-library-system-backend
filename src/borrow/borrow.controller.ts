@@ -63,6 +63,20 @@ export class BorrowController {
         }
     }
 
+    @Post('/submissions')
+    @SetMetadata('roles', [Role.ADMIN])
+    async updateBorrow(
+        @Query('bookInstanceId') bookInstanceId : string,
+        @Headers('user_id') userId
+    ) {
+        await this.borrowService.markAsReturned(bookInstanceId);
+        return {
+            status : 'success',
+            response : 'Borrow marked as returned'
+        }
+    }
+
+
     @Post('/')
     @SetMetadata('roles', [Role.ADMIN])
     async createBorrow(

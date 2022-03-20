@@ -35,7 +35,7 @@ export class BorrowService {
             userId : string
         }
     ) {
-        if(await this.checkForBorrowedInstances([payload.bookInstanceId])[0]) {
+        if((await this.checkForBorrowedInstances([payload.bookInstanceId]))[0]) {
             throw new BadRequestException('Book instance already taken');
         }
 
@@ -49,9 +49,7 @@ export class BorrowService {
             bookInstanceId : {
                 $in : bookInstanceIds
             },
-            returnDate : {
-                $exists : false
-            }
+            returnDate : null
         });
 
         return bookInstanceIds.map(id => borrows.some(borrow => borrow.bookInstanceId === id));
@@ -68,9 +66,7 @@ export class BorrowService {
 
     async markAsReturned(bookInstanceId : string) {
         await this.borrowModel.updateOne({
-            returnDate : {
-                $exists : false
-            },
+            returnDate : null,
             bookInstanceId
         }, {
             $set : {

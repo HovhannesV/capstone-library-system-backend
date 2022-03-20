@@ -20,8 +20,8 @@ export class Borrow {
     @Prop({ type: Date, required: true })
     dueDate: string;
 
-    @Prop({ type: Date })
-    returnDate: string;
+    @Prop({ type: Date, default : null })
+    returnDate: Date;
 
     @Prop({ type: String, required : true, index : true })
     userId: string
@@ -51,7 +51,6 @@ BorrowSchema.index(
         bookInstanceId: 1
     },
     {
-        unique: true,
-        partialFilterExpression: { returnDate: { $exists: false } }
+        partialFilterExpression: {  returnDate : { $eq: null } }
     }
 )
