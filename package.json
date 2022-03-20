@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "start-dev": "docker-compose up --build",
+    "start-dev": "docker-compose up --build;docker-compose down",
     "start:prod": "node dist/main",
     "test": "jest"
   },
