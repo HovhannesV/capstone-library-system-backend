@@ -26,6 +26,20 @@ export class BookController {
         }
     }
 
+    @Get('/home')
+    async getHomePageBooks(@Headers('user_id') userId) {
+        const favoriteBooks = await this.bookService.getMostFavoriteBooks(0, 60, userId);
+        const latestBooks = await this.bookService.getLatestBooks(0, 60, userId);
+
+        return {
+            status : 'success',
+            response : {
+                latestBooks,
+                favoriteBooks
+            }
+        }
+    }
+
 
     @Put('/:id')
     @SetMetadata('roles', [Role.ADMIN])

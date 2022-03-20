@@ -187,6 +187,27 @@ export class BookService {
         return Promise.all(orderedBooks.map(book => this.getBookRepresentation(book, userId)));
     }
 
+    async getMostFavoriteBooks(offset : number, limit : number, userId : string) {
+        const books = await this.bookModel.find({})
+            .sort({ favoritesCount : -1 })
+            .skip(offset)
+            .limit(limit)
+            .lean();
+
+        return Promise.all(books.map(book => this.getBookRepresentation(book, userId)));
+    }
+
+    async getLatestBooks(offset : number, limit : number, userId : string) {
+        const books = await this.bookModel.find({})
+            .sort({ create_date : -1 })
+            .skip(offset)
+            .limit(limit)
+            .lean();
+
+        return Promise.all(books.map(book => this.getBookRepresentation(book, userId)));
+    }
+
+
     async deleteBookById(id : string) {
         await this.bookModel.deleteOne({_id : id});
         await this.bookInstanceService.deleteInstancesByBookId(id);

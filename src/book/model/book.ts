@@ -30,7 +30,7 @@ export class Book {
     @Prop({ type: Date, required: true })
     publishDate : Date
 
-    @Prop({ type: Number, required: true })
+    @Prop({ type: Number, required: true, index : true })
     favoritesCount: number;
 
     @Prop({ type: [{ type: String }], required: true })
@@ -54,7 +54,7 @@ export class Book {
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: Author.name })
     author: string;
 
-    @Prop()
+    @Prop({ index : true })
     create_date: Date;
 
     @Prop()

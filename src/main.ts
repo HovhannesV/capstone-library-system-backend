@@ -7,8 +7,6 @@ import * as swaggerUi from 'swagger-ui-express';
 import 'source-map-support/register'
 
 
-import * as tk from 'timekeeper'
-tk.freeze(1647185500* 1000)
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

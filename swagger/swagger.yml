@@ -165,21 +165,14 @@ paths:
                   response:
                     type: object
                     properties:
-                      latest_books:
+                      latestBooks:
                         type: array
                         items:
                           $ref: '#/components/schemas/Book'
-                      most_favorite_books:
+                      mostFavoriteBooks:
                         type: array
                         items:
                           $ref: '#/components/schemas/Book'
-                      metadata:
-                        type: object
-                        properties:
-                          latestBooksNextPage:
-                            type: string
-                          mostFavoriteBooksNextPage:
-                            type: string
   /books/favorites:
     get:
       summary: "Favorite books endpoint for user"
