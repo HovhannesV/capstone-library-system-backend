@@ -5,8 +5,8 @@ export type GenreDocument = Genre & mongoose.Document;
 
 @Schema({
     timestamps: {
-        createdAt: 'create_date',
-        updatedAt: 'update_date',
+        createdAt: 'createDate',
+        updatedAt: 'updateDate',
     },
     toObject: {
         getters: true,
@@ -17,6 +17,12 @@ export class Genre {
 
     @Prop({ type: String, required: true, unique : true })
     genre: string;
+
+    @Prop()
+    createDate: Date;
+
+    @Prop()
+    updateDate: Date;
 }
 
 export const GenreSchema = SchemaFactory.createForClass(Genre);

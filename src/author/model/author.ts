@@ -5,8 +5,8 @@ export type AuthorDocument = Author & mongoose.Document;
 
 @Schema({
     timestamps: {
-        createdAt: 'create_date',
-        updatedAt: 'update_date',
+        createdAt: 'createDate',
+        updatedAt: 'updateDate',
     },
     toObject: {
         getters: true,
@@ -22,10 +22,10 @@ export class Author {
     imageId : string
 
     @Prop()
-    create_date: Date;
+    createDate: Date;
 
     @Prop()
-    update_date: Date;
+    updateDate: Date;
 }
 
 export const AuthorSchema = SchemaFactory.createForClass(Author);

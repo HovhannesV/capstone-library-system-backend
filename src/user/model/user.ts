@@ -21,8 +21,8 @@ export const SessionSchema = SchemaFactory.createForClass(Session);
 
 @Schema({
     timestamps: {
-        createdAt: 'create_date',
-        updatedAt: 'update_date',
+        createdAt: 'createDate',
+        updatedAt: 'updateDate',
     },
     toObject: {
         getters: true,
@@ -47,10 +47,10 @@ export class User {
     sessions : Session[]
 
     @Prop()
-    create_date: Date;
+    createDate: Date;
 
     @Prop()
-    update_date: Date;
+    updateDate: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
