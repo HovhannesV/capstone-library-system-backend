@@ -105,6 +105,7 @@ import {extractKeywords, normalize} from "../utils";
 import {BookInstanceService} from "./book-instance.service";
 import {FavoriteBooksService} from "./favorite-books-service";
 import * as natural from 'natural'
+import {BorrowService} from "../borrow/borrow.service";
 
 @Injectable()
 export class BookService {
@@ -123,6 +124,9 @@ export class BookService {
 
     @Inject(FavoriteBooksService)
     private favoriteBookService : FavoriteBooksService
+
+    @Inject(BorrowService)
+    private borrowService : BorrowService
 
 
     async createBook(bookPayload : CreateBookPayload) {
@@ -245,6 +249,8 @@ export class BookService {
     private async getBookRepresentation(book, userId ?: string) {
         if(!book) return book;
         const instances = await this.bookInstanceService.getInstancesByBookId(book.id);
+        const instanceStatuses = await this.borrowService.checkForBorrowedInstances(instances.map(i => i.id))
+
         return {
             ..._.pick(
                 book,
@@ -256,7 +262,7 @@ export class BookService {
                 'publishDate',
                 'fileId'
             ),
-            instances,
+            instances : instances.map((inst, i) => ({...inst, taken : instanceStatuses[i] })),
             isFavorite : userId ? await this.favoriteBookService.isMarkedFavorite(userId, book.id) : undefined
         }
     }

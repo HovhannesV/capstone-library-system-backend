@@ -1,4 +1,4 @@
-import { Module} from '@nestjs/common';
+import {forwardRef, Module} from '@nestjs/common';
 import {MongooseModule} from "@nestjs/mongoose";
 import {BookService} from "./book.service";
 import {BookController} from "./book.controller";
@@ -12,6 +12,7 @@ import {BookInstance, BookInstanceSchema} from "./model/book-instance";
 import {FavoriteBooksController} from "./favorite-books.controller";
 import {FavoriteBooksService} from "./favorite-books-service";
 import {UserFavoriteBooks, UserFavoriteBooksSchema} from "./model/user-favorite-books";
+import {BorrowModule} from "../borrow/borrow.module";
 
 
 
@@ -46,7 +47,8 @@ import {UserFavoriteBooks, UserFavoriteBooksSchema} from "./model/user-favorite-
         ),
         AuthorModule,
         GenreModule,
-        CoverTypeModule
+        CoverTypeModule,
+        forwardRef(() => BorrowModule)
     ]
 })
 export class BookModule {}

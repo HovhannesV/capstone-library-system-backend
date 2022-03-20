@@ -65,6 +65,14 @@ export class BookInstanceService {
         });
     }
 
+    async getById(id : string) {
+        const instance = await this.bookInstanceModel.findOne({
+            _id : id,
+            deleted : false
+        })
+        return _.pick(instance,  'coverType', 'id', 'bookId');
+    }
+
     async getInstancesByBookId(bookId : string) {
         const rawInstances = await this.bookInstanceModel.find({
             bookId,
