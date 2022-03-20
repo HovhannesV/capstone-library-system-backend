@@ -8,6 +8,7 @@ import {AuthGuard} from "./user/auth.guard";
 import {CoverTypeModule} from "./coverType/cover-type.module";
 import {GenreModule} from "./genre/genre.module";
 import {BookModule} from "./book/book.module";
+import {BorrowModule} from "./borrow/borrow.module";
 
 @Module({
     imports: [
@@ -22,7 +23,8 @@ import {BookModule} from "./book/book.module";
             },
         ),
         FileModule,
-        BookModule
+        BookModule,
+        BorrowModule
     ],
     providers: [
         {

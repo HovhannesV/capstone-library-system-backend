@@ -11,6 +11,8 @@ import {BookInstanceService} from "../book/book-instance.service";
 import {UserService} from "../user/user.service";
 import {IsDateString, IsNotEmpty, IsString} from "class-validator";
 import {Transform, TransformFnParams} from "class-transformer";
+import {BookService} from "../book/book.service";
+import * as _ from "lodash";
 
 
 export class CreateBorrowPayload {
@@ -32,8 +34,10 @@ export class CreateBorrowPayload {
 @Controller("/borrows")
 export class BorrowController {
 
+    @Inject(BookService)
+    private bookService : BookService
 
-    @Inject(forwardRef(() => BookInstanceService))
+    @Inject(BookInstanceService)
     private readonly bookInstanceService : BookInstanceService
 
     constructor(
@@ -49,7 +53,7 @@ export class BorrowController {
         @Query('limit' , new DefaultValuePipe(60), new ParseIntPipe()) limit : number,
         @Headers('user_id') userId
     ) {
-        const borrows = await this.borrowService.getBorrows(userId, offset, limit);
+        const borrows = await this.getBorrowsPresentation(await this.borrowService.getBorrows(userId, offset, limit), userId);
         return {
             status : 'success',
             response : borrows,
@@ -79,7 +83,7 @@ export class BorrowController {
         });
         return {
             status : 'success',
-            response : borrow
+            response : await this.getBorrowRepresentation(borrow, userId)
         }
     }
 
@@ -96,5 +100,21 @@ export class BorrowController {
         }
     }
 
+
+    private async getBorrowsPresentation(borrows, userId : string) {
+        return Promise.all(
+            borrows.map(borrow => this.getBorrowRepresentation(borrow, userId))
+        )
+    }
+
+    private async getBorrowRepresentation(borrow, userId : string) {
+        const bookInstance = await this.bookInstanceService.getById(borrow.bookInstanceId);
+        const book = bookInstance ? await this.bookService.findBookById(bookInstance.bookId, userId) : null;
+
+        return {
+            ..._.pick(borrow, 'id', 'status', 'bookInstanceId', 'dueDate', 'returDate', 'createDate'),
+            book
+        }
+    }
 
 }

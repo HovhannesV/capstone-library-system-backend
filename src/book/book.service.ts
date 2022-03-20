@@ -125,7 +125,7 @@ export class BookService {
     @Inject(FavoriteBooksService)
     private favoriteBookService : FavoriteBooksService
 
-    @Inject(forwardRef(() => BorrowService))
+    @Inject(BorrowService)
     private borrowService : BorrowService
 
 

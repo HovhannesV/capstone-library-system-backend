@@ -12,7 +12,7 @@ import {BookInstance, BookInstanceSchema} from "./model/book-instance";
 import {FavoriteBooksController} from "./favorite-books.controller";
 import {FavoriteBooksService} from "./favorite-books-service";
 import {UserFavoriteBooks, UserFavoriteBooksSchema} from "./model/user-favorite-books";
-import {BorrowModule} from "../borrow/borrow.module";
+import {BorrowCoreModule} from "../borrow/borrow-core.module";
 
 
 
@@ -49,7 +49,7 @@ import {BorrowModule} from "../borrow/borrow.module";
         AuthorModule,
         GenreModule,
         CoverTypeModule,
-        forwardRef(() => BorrowModule)
+        BorrowCoreModule
     ]
 })
 export class BookModule {}
