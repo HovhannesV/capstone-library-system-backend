@@ -33,6 +33,7 @@
     "mongo-gridfs": "^1.1.0",
     "mongoose": "^6.0.13",
     "multer-gridfs-storage": "^5.0.2",
+    "natural": "^5.1.13",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",

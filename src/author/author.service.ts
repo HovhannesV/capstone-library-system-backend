@@ -2,7 +2,7 @@ import {BadRequestException, Inject, Injectable, NotFoundException} from "@nestj
 import {InjectModel} from "@nestjs/mongoose";
 import {Author, AuthorDocument} from "./model/author";
 import {Model} from "mongoose";
-import {extractKeywords} from "../utils";
+import {extractKeywords, normalize} from "../utils";
 
 
 @Injectable()
@@ -14,7 +14,7 @@ export class AuthorService {
 
     async createAuthor(name: string, imageId: string) {
         return (await this.authorModel.create({
-            name : extractKeywords(name).join(' '),
+            name : normalize(name),
             imageId
         })).toObject();
     }

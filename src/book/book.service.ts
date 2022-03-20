@@ -101,10 +101,10 @@ export enum PARAM {
 import * as _ from 'lodash'
 import {AuthorService} from "../author/author.service";
 import {GenreService} from "../genre/genre.service";
-import {extractKeywords} from "../utils";
+import {extractKeywords, normalize} from "../utils";
 import {BookInstanceService} from "./book-instance.service";
 import {FavoriteBooksService} from "./favorite-books-service";
-
+import * as natural from 'natural'
 
 @Injectable()
 export class BookService {
@@ -144,8 +144,8 @@ export class BookService {
             titleKeywords : extractKeywords(bookPayload.title),
             descriptionKeywords: extractKeywords(bookPayload.description),
             keywords: extractKeywords(author.name, bookPayload.title, bookPayload.description),
-            title : extractKeywords(bookPayload.title).join(' '),
-            description: extractKeywords(bookPayload.description).join(' '),
+            title : normalize(bookPayload.title),
+            description: normalize(bookPayload.description),
         })).toObject();
 
 
@@ -172,12 +172,12 @@ export class BookService {
 
         if(bookPayload.title) {
             book.titleKeywords = extractKeywords(bookPayload.title || '');
-            book.title = extractKeywords(bookPayload.title).join(' ');
+            book.title = normalize(bookPayload.title);
         }
 
         if(bookPayload.description) {
             book.descriptionKeywords = extractKeywords(bookPayload.description || '');
-            book.description = extractKeywords(bookPayload.description).join(' ');
+            book.description = normalize(bookPayload.description);
         }
 
         book.keywords = book.authorKeywords.concat(book.titleKeywords).concat(book.descriptionKeywords);
@@ -226,7 +226,7 @@ export class BookService {
     ) {
         const books = await this.bookModel.find({
             [param === PARAM.ALL ? 'keywords' : `${param}Keywords`] : {
-                $all : keywords
+                $all : keywords.map(keyword => natural.PorterStemmer.stem(keyword))
             }
         })
         .sort({ [sort] : descending ? -1 : 1 })
