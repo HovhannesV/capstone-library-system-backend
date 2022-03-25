@@ -92,7 +92,7 @@ paths:
                     enum: [ 'success' ]
                   response:
                     type: string
-                    enum: [ 'User session updated' ]
+                    enum: [ 'User session has been updated' ]
   /user/tokens:
     post:
       summary: endpoint for refreshing token
@@ -165,28 +165,30 @@ paths:
                   response:
                     type: object
                     properties:
-                      latest_books:
+                      latestBooks:
                         type: array
                         items:
                           $ref: '#/components/schemas/Book'
-                      most_favorite_books:
+                      mostFavoriteBooks:
                         type: array
                         items:
                           $ref: '#/components/schemas/Book'
-                      metadata:
-                        type: object
-                        properties:
-                          latestBooksNextPage:
-                            type: string
-                          mostFavoriteBooksNextPage:
-                            type: string
-  /books/favorite:
+  /books/favorites:
     get:
       summary: "Favorite books endpoint for user"
       tags:
         - books
       security:
         - KeyAuth: [ ]
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: number
+        - in: query
+          name: limit
+          schema:
+            type: number
       responses:
         200:
           description: success response
@@ -207,7 +209,6 @@ paths:
                     properties:
                       nextPage:
                         type: string
-  /books/favorites:
     post:
       summary: "Adds book to favorites"
       tags:
@@ -220,7 +221,7 @@ paths:
             schema:
               type: object
               properties:
-                book_id:
+                bookId:
                   type: string
       responses:
         200:
@@ -271,10 +272,13 @@ paths:
         - KeyAuth: [ ]
       parameters:
         - in: query
-          name: status
+          name: offset
           schema:
-            type: string
-            enum: [ 'taken', 'returned' ]
+            type: number
+        - in: query
+          name: limit
+          schema:
+            type: number
       responses:
         200:
           description: success response
@@ -312,11 +316,11 @@ paths:
             schema:
               type: object
               properties:
-                user_email:
+                userEmail:
                   type: string
-                book_id:
+                bookInstanceId:
                   type: string
-                due_date:
+                dueDate:
                   type: string
                   format: date
       responses:
@@ -331,35 +335,20 @@ paths:
                     type: string
                     enum: [ 'success' ]
                   response:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/borrow'
-                  metadata:
-                    type: object
-                    properties:
-                      nextPage:
-                        type: string
-    put:
-      summary: "Update borrow status by book instance id (admin)"
+                    $ref: '#/components/schemas/borrow'
+  /borrows/submissions:
+    post:
+      summary: "Mark borrow as returned"
       tags:
         - borrows
       security:
         - KeyAuth: [ ]
       parameters:
         - in: query
-          name : book_instance_id
+          name : bookInstanceId
           required: true
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  type : string
-                  enum: ['returned']
       responses:
         200:
           description: success response
@@ -372,14 +361,8 @@ paths:
                     type: string
                     enum: [ 'success' ]
                   response:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/borrow'
-                  metadata:
-                    type: object
-                    properties:
-                      nextPage:
-                        type: string
+                    type: string
+                    enum: [ 'Borrow marked as returned' ]
 
   /books/{id}:
     get:
@@ -486,6 +469,10 @@ paths:
           name: sort
           schema:
             type: string
+        - in: query
+          name: descending
+          schema:
+            type: boolean
       responses:
         200:
           description: success response
@@ -887,20 +874,22 @@ components:
         status:
           type: string
           enum: [ 'taken', 'returned' ]
-        book_instance_id:
+        bookInstanceId:
           type: string
-        due_date:
+        dueDate:
           type: string
           format: Date
-        return_date:
+        returDate:
           type : string
           format: Date
-        create_date:
+        createDate:
           type: string
           format: Date
     Book:
       type: object
       properties:
+        isFavorite:
+          type: boolean
         id:
           type: string
         instances:
