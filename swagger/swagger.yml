@@ -144,6 +144,34 @@ paths:
                     enum: ['success']
                   response:
                     $ref: '#/components/schemas/User'
+  /users:
+    get:
+      summary: "Get users list (admin)"
+      tags:
+        - users
+      security:
+        - KeyAuth: []
+      parameters:
+        - name: prefix
+          description: "prefix of the email to search"
+          in: query
+          schema:
+            type: string
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['success']
+                  response:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
   /books/home:
     get:
       summary: "Home page endpoint for book"
@@ -271,6 +299,51 @@ paths:
       security:
         - KeyAuth: [ ]
       parameters:
+        - in: query
+          name: offset
+          schema:
+            type: number
+        - in: query
+          name: limit
+          schema:
+            type: number
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/borrow'
+                        - type: object
+                          properties:
+                            book:
+                              $ref: '#/components/schemas/Book'
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
+  /users/{userId}/borrows/:
+    get:
+      summary: "Get borrows of a user (admin)"
+      tags:
+        - borrows
+      security:
+        - KeyAuth: [ ]
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
         - in: query
           name: offset
           schema:
@@ -953,3 +1026,6 @@ components:
           type: string
         profileImageUrl:
           type: string
+        role:
+          type: string
+          enum: ['admin', 'user']
