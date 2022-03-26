@@ -42,7 +42,7 @@ export class UserController {
             status : 'success',
             response : _.pick(
                 await this.userService.getById(userId),
-                'id', 'email', 'name', 'profileImageUrl'
+                'id', 'email', 'name', 'profileImageUrl', 'role'
             )
         };
     }

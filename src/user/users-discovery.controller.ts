@@ -2,6 +2,7 @@ import {
     Controller, DefaultValuePipe, Get, Headers, ParseIntPipe, Query
 } from '@nestjs/common';
 import {UserService} from "./user.service";
+import * as _ from "lodash";
 
 
 
@@ -23,7 +24,9 @@ export class UsersDiscoveryController {
 
         return {
             status : 'success',
-            response : users,
+            response : users.map(
+                user => _.pick(user, 'id', 'email', 'name', 'profileImageUrl', 'role')
+            ),
             metadata : {
                 nextPage : users.length === limit ? nextPage : undefined
             }
