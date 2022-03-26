@@ -20,7 +20,7 @@ export class FileController {
     constructor(private readonly fileService: FileService) {}
 
     @Post()
-    @UseInterceptors(FileInterceptor('icon_file', {
+    @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
             destination: '/tmp', filename: (req, file, cb) => {
                 cb(null, `${v4()}.${file.originalname.split('.').reverse()[0]}`)
@@ -38,7 +38,6 @@ export class FileController {
     }
 
     @Get('/:iconId')
-    @SetMetadata('auth', 'none')
     async getFile(@Param('iconId') iconId, @Res() res) {
         res.set({
             'Content-Type': mime.lookup(iconId.split('.').reverse()[0])
