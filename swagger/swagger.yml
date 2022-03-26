@@ -157,6 +157,14 @@ paths:
           in: query
           schema:
             type: string
+        - name: offset
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
       responses:
         200:
           description: success response
@@ -172,6 +180,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/User'
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
   /books/home:
     get:
       summary: "Home page endpoint for book"
@@ -332,6 +345,38 @@ paths:
                     properties:
                       nextPage:
                         type: string
+    post:
+      summary: "Create borrow, when admin hands the book to a user (admin)"
+      tags:
+        - borrows
+      security:
+        - KeyAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userEmail:
+                  type: string
+                bookInstanceId:
+                  type: string
+                dueDate:
+                  type: string
+                  format: date
+      responses:
+        200:
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ 'success' ]
+                  response:
+                    $ref: '#/components/schemas/borrow'
   /users/{userId}/borrows/:
     get:
       summary: "Get borrows of a user (admin)"
@@ -377,38 +422,6 @@ paths:
                     properties:
                       nextPage:
                         type: string
-    post:
-      summary: "Create borrow, when admin hands the book to a user (admin)"
-      tags:
-        - borrows
-      security:
-        - KeyAuth: [ ]
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                userEmail:
-                  type: string
-                bookInstanceId:
-                  type: string
-                dueDate:
-                  type: string
-                  format: date
-      responses:
-        200:
-          description: success response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: [ 'success' ]
-                  response:
-                    $ref: '#/components/schemas/borrow'
   /borrows/submissions:
     post:
       summary: "Mark borrow as returned"
@@ -683,7 +696,7 @@ paths:
                   response:
                     type: object
                     properties:
-                      file_id:
+                      fileId:
                         type: string
   /files/{id}:
     get:

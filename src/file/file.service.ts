@@ -13,15 +13,22 @@ export class FileService {
         this.storage = new Storage();
     }
 
-    getIcon(iconId: string): Readable {
-        return this.storage.bucket('lms-images').file(iconId).createReadStream();
+    getFile(fileId: string): Readable {
+        return this.storage.bucket('lms-images').file(fileId).createReadStream();
     }
 
-    async uploadIcon(path : string) : Promise<string> {
-        const iconId = v4() + "." + path.split('.').reverse()[0];
-        await this.storage.bucket('lms-images').upload(path, {
-            destination: iconId
+    async uploadFile(path : string) : Promise<string> {
+        const fileId = v4() + "." + path.split('.').reverse()[0];
+        await this.storage.bucket('lms-files').upload(path, {
+            destination: fileId
         })
-        return iconId;
+        return fileId;
     }
+
+
+    async deleteFile(fileId : string) {
+        await this.storage.bucket('lms-files').file(fileId).delete()
+    }
+
+
 }

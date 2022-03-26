@@ -13,37 +13,36 @@ import {v4} from 'uuid'
 import * as fs from "fs";
 
 import * as mime from 'mime-types';
+import {Role} from "../user/model/user";
 
-@Controller("/icons")
+@Controller("/files")
 export class FileController {
-    constructor(private readonly iconService: FileService) {}
+    constructor(private readonly fileService: FileService) {}
 
     @Post()
-    @UseInterceptors(FileInterceptor('icon_file', {
+    @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
             destination: '/tmp', filename: (req, file, cb) => {
                 cb(null, `${v4()}.${file.originalname.split('.').reverse()[0]}`)
             }
         })
     }))
-    async uploadIcon(@UploadedFile() file: Express.Multer.File,
-                     @Headers('user_id') adminId,
-                     @Headers('role') role : string) {
-        if(role !== 'admin') throw new UnauthorizedException("admin account needed");
-        const iconId = await this.iconService.uploadIcon(file.path);
+    @SetMetadata('roles', [Role.ADMIN])
+    async uploadFile(@UploadedFile() file: Express.Multer.File,
+                     @Headers('user_id') adminId) {
+        const fileId = await this.fileService.uploadFile(file.path);
         fs.unlink(file.path, (err) => { if(err) console.log(err); })
         return {
-            icon_id : iconId
+            fileId : fileId
         }
     }
 
-    @Get('/:iconId')
-    @SetMetadata('auth', 'none')
-    async getIcon(@Param('iconId') iconId, @Res() res) {
+    @Get('/:fileId')
+    async getFile(@Param('fileId') fileId, @Res() res) {
         res.set({
-            'Content-Type': mime.lookup(iconId.split('.').reverse()[0])
+            'Content-Type': mime.lookup(fileId.split('.').reverse()[0])
         });
-        this.iconService.getIcon(iconId).pipe(res);
+        this.fileService.getFile(fileId).pipe(res);
     }
 
 
