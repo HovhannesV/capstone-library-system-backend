@@ -696,7 +696,7 @@ paths:
                   response:
                     type: object
                     properties:
-                      file_id:
+                      fileId:
                         type: string
   /files/{id}:
     get:

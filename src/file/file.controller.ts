@@ -15,7 +15,7 @@ import * as fs from "fs";
 import * as mime from 'mime-types';
 import {Role} from "../user/model/user";
 
-@Controller("/icons")
+@Controller("/files")
 export class FileController {
     constructor(private readonly fileService: FileService) {}
 
@@ -30,19 +30,19 @@ export class FileController {
     @SetMetadata('roles', [Role.ADMIN])
     async uploadFile(@UploadedFile() file: Express.Multer.File,
                      @Headers('user_id') adminId) {
-        const iconId = await this.fileService.uploadFile(file.path);
+        const fileId = await this.fileService.uploadFile(file.path);
         fs.unlink(file.path, (err) => { if(err) console.log(err); })
         return {
-            icon_id : iconId
+            fileId : fileId
         }
     }
 
-    @Get('/:iconId')
-    async getFile(@Param('iconId') iconId, @Res() res) {
+    @Get('/:fileId')
+    async getFile(@Param('fileId') fileId, @Res() res) {
         res.set({
-            'Content-Type': mime.lookup(iconId.split('.').reverse()[0])
+            'Content-Type': mime.lookup(fileId.split('.').reverse()[0])
         });
-        this.fileService.getFile(iconId).pipe(res);
+        this.fileService.getFile(fileId).pipe(res);
     }
 
 
