@@ -19,7 +19,7 @@ export class FileService {
 
     async uploadFile(path : string) : Promise<string> {
         const fileId = v4() + "." + path.split('.').reverse()[0];
-        await this.storage.bucket('lms-images').upload(path, {
+        await this.storage.bucket('lms-files').upload(path, {
             destination: fileId
         })
         return fileId;
@@ -27,7 +27,7 @@ export class FileService {
 
 
     async deleteFile(fileId : string) {
-        await this.storage.bucket('lms-images').file(fileId).delete()
+        await this.storage.bucket('lms-files').file(fileId).delete()
     }
 
 
