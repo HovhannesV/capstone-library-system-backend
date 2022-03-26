@@ -5,6 +5,7 @@ import {UserController} from "./user.controller";
 import {MongooseModule} from "@nestjs/mongoose";
 import {UserSchema, User} from "./model/user";
 import {GoogleAccountService} from "./google-account-service";
+import {UsersDiscoveryController} from "./users-discovery.controller";
 
 
 @Module({
@@ -13,7 +14,7 @@ import {GoogleAccountService} from "./google-account-service";
         UserService,
         'JWT_SECRET',
     ],
-    controllers: [ UserController ],
+    controllers: [ UserController, UsersDiscoveryController ],
     providers: [
         AuthGuard,
         UserService,

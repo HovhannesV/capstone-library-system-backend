@@ -79,6 +79,13 @@ export class UserService {
         }
     }
 
+    async getUsersByEmailPrefix(emailPrefix : string, offset : number, limit : number) {
+        const filter = emailPrefix ? { email : { $regex : new RegExp(`^${emailPrefix}`) } } : {};
+
+        return this.userModel.find(filter).sort({email : 1}).skip(offset).limit(limit);
+    }
+
+
     async getUserByEmail(email : string) {
         const user = await this.userModel.findOne({ email : email });
         return user?.toObject();
