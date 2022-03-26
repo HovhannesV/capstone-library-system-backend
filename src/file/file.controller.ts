@@ -17,7 +17,7 @@ import {Role} from "../user/model/user";
 
 @Controller("/icons")
 export class FileController {
-    constructor(private readonly iconService: FileService) {}
+    constructor(private readonly fileService: FileService) {}
 
     @Post()
     @UseInterceptors(FileInterceptor('icon_file', {
@@ -30,7 +30,7 @@ export class FileController {
     @SetMetadata('roles', [Role.ADMIN])
     async uploadFile(@UploadedFile() file: Express.Multer.File,
                      @Headers('user_id') adminId) {
-        const iconId = await this.iconService.uploadFile(file.path);
+        const iconId = await this.fileService.uploadFile(file.path);
         fs.unlink(file.path, (err) => { if(err) console.log(err); })
         return {
             icon_id : iconId
@@ -43,7 +43,7 @@ export class FileController {
         res.set({
             'Content-Type': mime.lookup(iconId.split('.').reverse()[0])
         });
-        this.iconService.getFile(iconId).pipe(res);
+        this.fileService.getFile(iconId).pipe(res);
     }
 
 
