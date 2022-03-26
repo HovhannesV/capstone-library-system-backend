@@ -19,7 +19,7 @@ export class UsersDiscoveryController {
         @Query('limit' , new DefaultValuePipe(60), new ParseIntPipe()) limit : number,
     ) {
         const users = await this.userService.getUsersByEmailPrefix(prefix || null, offset, limit);
-        const nextPage = `/users?offset=${offset}&limit=${limit}` + (prefix ? `&prefix=${prefix}` : '');
+        const nextPage = `/users?offset=${offset + limit}&limit=${limit}` + (prefix ? `&prefix=${prefix}` : '');
 
         return {
             status : 'success',

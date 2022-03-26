@@ -13,6 +13,7 @@ import {IsDateString, IsNotEmpty, IsString} from "class-validator";
 import {Transform, TransformFnParams} from "class-transformer";
 import {BookService} from "../book/book.service";
 import * as _ from "lodash";
+import * as Path from "path";
 
 
 export class CreateBorrowPayload {
@@ -31,7 +32,7 @@ export class CreateBorrowPayload {
 }
 
 
-@Controller("/borrows")
+@Controller("/")
 export class BorrowController {
 
     @Inject(BookService)
@@ -46,7 +47,7 @@ export class BorrowController {
     ) {}
 
 
-    @Get('/')
+    @Get('/borrows')
     @SetMetadata('roles', [Role.USER])
     async getBorrows(
         @Query('offset' , new DefaultValuePipe(0), new ParseIntPipe()) offset : number,
@@ -63,7 +64,27 @@ export class BorrowController {
         }
     }
 
-    @Post('/submissions')
+    @Get('/users/:userId/borrows')
+    @SetMetadata('roles', [Role.ADMIN])
+    async getBorrowsOfUser(
+        @Param('userId') userId : string,
+        @Query('offset' , new DefaultValuePipe(0), new ParseIntPipe()) offset : number,
+        @Query('limit' , new DefaultValuePipe(60), new ParseIntPipe()) limit : number,
+        @Headers('user_id') adminId
+    ) {
+        const borrows = await this.getBorrowsPresentation(await this.borrowService.getBorrows(userId, offset, limit), adminId);
+        return {
+            status : 'success',
+            response : borrows,
+            metadata : {
+                nextPage : borrows.length === limit ? `/users/${userId}/borrows?offset=${offset + limit}&limit=${limit}` : undefined
+            }
+        }
+    }
+
+
+
+    @Post('/borrows/submissions')
     @SetMetadata('roles', [Role.ADMIN])
     async updateBorrow(
         @Query('bookInstanceId') bookInstanceId : string,
@@ -77,17 +98,17 @@ export class BorrowController {
     }
 
 
-    @Post('/')
+    @Post('/borrows')
     @SetMetadata('roles', [Role.ADMIN])
     async createBorrow(
         @Headers('user_id') userId,
         @Body() body : CreateBorrowPayload
     ) {
-        if(!await this.bookInstanceService.getInstancesByBookId(body.bookInstanceId)) {
+        if(!await this.bookInstanceService.getById(body.bookInstanceId)) {
             throw new BadRequestException("Book instance with given does not exist");
         }
         const user = await this.userService.getUserByEmail(body.userEmail);
-        if(!user || user.role !== Role.USER) {
+        if(!user) {
             throw new BadRequestException("Book instance with given does not exist");
         }
         const borrow = await this.borrowService.createBorrow({
@@ -113,7 +134,7 @@ export class BorrowController {
         const book = bookInstance ? await this.bookService.findBookById(bookInstance.bookId, userId) : null;
 
         return {
-            ..._.pick(borrow, 'id', 'status', 'bookInstanceId', 'dueDate', 'returDate', 'createDate'),
+            ..._.pick(borrow, 'id', 'status', 'bookInstanceId', 'dueDate', 'returnDate', 'createDate'),
             book
         }
     }
