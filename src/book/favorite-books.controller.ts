@@ -24,7 +24,6 @@ export class FavoriteBooksController {
 
 
     @Get()
-    @SetMetadata('roles', [Role.USER])
     async getFavoriteBooksOfUser(
         @Headers('user_id') userId,
         @Query('offset', new DefaultValuePipe(0)) offset : number,
@@ -42,7 +41,6 @@ export class FavoriteBooksController {
     }
 
     @Post()
-    @SetMetadata('roles', [Role.USER])
     async addBookToFavorites(
         @Body() {bookId} : AddToFavoritesPayload,
         @Headers('user_id') userId
@@ -59,12 +57,10 @@ export class FavoriteBooksController {
     }
 
     @Delete()
-    @SetMetadata('roles', [Role.USER])
     async removeBookFromFavorites(
         @Query('bookId') bookId : string,
         @Headers('user_id') userId
     ) {
-        console.log(' dfgddddddddddd 4');
         await this.favoriteBooksService.removeBookFromFavorites(userId, bookId);
         return {
             status : 'success',
