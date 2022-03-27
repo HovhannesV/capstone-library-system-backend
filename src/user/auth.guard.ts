@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
         if(this.reflector.get<string>('auth', context.getHandler()) === 'none') return true;
 
         const requestObj = context.switchToHttp().getRequest();
-        const authToken = requestObj.headers.authorization;
+        const authToken = requestObj.headers.authorization && requestObj.headers.authorization.replace('Bearer ', '');
         if(!authToken) {
             throw new BadRequestException('auth token not present');
         }
