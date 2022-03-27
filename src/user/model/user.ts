@@ -19,6 +19,12 @@ export class Session {
 
 export const SessionSchema = SchemaFactory.createForClass(Session);
 
+const googleUrlGetter = value => {
+    const chunks = value.split('=') ;
+    chunks[chunks.length - 1] = 's300-c'
+    return chunks.join('=');
+}
+
 @Schema({
     timestamps: {
         createdAt: 'createDate',
@@ -37,7 +43,7 @@ export class User {
     @Prop({ type: String, required: true })
     name: string;
 
-    @Prop({ type: String, default : false })
+    @Prop({ type: String, default : false, get : googleUrlGetter })
     profileImageUrl: string;
 
     @Prop({ type: String, enum: ['admin', 'user'], required : true })
