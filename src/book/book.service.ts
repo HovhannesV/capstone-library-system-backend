@@ -157,7 +157,7 @@ export class BookService {
         })).toObject();
 
 
-        return this.getBookRepresentation(book);
+        return this.findBookById(book.id);
     }
 
     async updateBookById(id : string, bookPayload : UpdateBookPayload) {
