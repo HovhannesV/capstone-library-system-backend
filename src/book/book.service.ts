@@ -210,6 +210,7 @@ export class BookService {
 
     async getMostFavoriteBooks(offset : number, limit : number, userId : string) {
         const books = await this.bookModel.find({})
+            .populate('author')
             .sort({ favoritesCount : -1 })
             .skip(offset)
             .limit(limit);
@@ -219,6 +220,7 @@ export class BookService {
 
     async getLatestBooks(offset : number, limit : number, userId : string) {
         const books = await this.bookModel.find({})
+            .populate('author')
             .sort({ createDate : -1 })
             .skip(offset)
             .limit(limit);
@@ -237,6 +239,7 @@ export class BookService {
                 $all : keywords.map(keyword => natural.PorterStemmer.stem(keyword))
             }
         })
+        .populate('author')
         .sort({ [sort] : descending ? -1 : 1 })
         .skip(offset)
         .limit(limit);
