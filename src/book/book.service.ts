@@ -272,7 +272,8 @@ export class BookService {
                 'title',
                 'coverImageId',
                 'publishDate',
-                'fileId'
+                'fileId',
+                'genres'
             ),
             instances : instances.map((inst, i) => ({...inst, taken : instanceStatuses[i] })),
             isFavorite : userId ? await this.favoriteBookService.isMarkedFavorite(userId, book.id) : undefined
