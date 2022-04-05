@@ -86,7 +86,7 @@ export class BookController {
 
     @Get('/')
     async browseBooks(
-        @Query('keywords', new ParseArrayPipe({items : String})) keywords : string[],
+        @Query('keywords', new ParseArrayPipe({items : String, optional : true})) keywords : string[] = [],
         @Query('param', new DefaultValuePipe(PARAM.ALL), new ParseEnumPipe(PARAM)) param : PARAM,
         @Query('sort', new DefaultValuePipe(SORT.CREATE_DATE), new ParseEnumPipe(SORT)) sort : SORT,
         @Query('descending' , new DefaultValuePipe(true), new ParseBoolPipe()) descending : boolean,
