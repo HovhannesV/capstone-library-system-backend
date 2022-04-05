@@ -234,11 +234,13 @@ export class BookService {
         offset : number, limit : number,
         userId : string
     ) {
-        const books = await this.bookModel.find({
-            [param === PARAM.ALL ? 'keywords' : `${param}Keywords`] : {
+        const query = {};
+        if(keywords.length) {
+            query[param === PARAM.ALL ? 'keywords' : `${param}Keywords`] = {
                 $all : keywords.map(keyword => natural.PorterStemmer.stem(keyword))
             }
-        })
+        }
+        const books = await this.bookModel.find(query)
         .populate('author')
         .sort({ [sort] : descending ? -1 : 1 })
         .skip(offset)
