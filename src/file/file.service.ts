@@ -14,12 +14,12 @@ export class FileService {
     }
 
     getFile(fileId: string): Readable {
-        return this.storage.bucket('lms-files').file(fileId).createReadStream();
+        return this.storage.bucket('lms-file').file(fileId).createReadStream();
     }
 
     async uploadFile(path : string) : Promise<string> {
         const fileId = v4() + "." + path.split('.').reverse()[0];
-        await this.storage.bucket('lms-files').upload(path, {
+        await this.storage.bucket('lms-file').upload(path, {
             destination: fileId
         })
         return fileId;
@@ -27,7 +27,7 @@ export class FileService {
 
 
     async deleteFile(fileId : string) {
-        await this.storage.bucket('lms-files').file(fileId).delete()
+        await this.storage.bucket('lms-file').file(fileId).delete()
     }
 
 
