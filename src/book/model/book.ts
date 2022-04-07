@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import {Author} from "../../author/model/author";
+import {UserFavoriteBooksSchema} from "./user-favorite-books";
 
 export type BookDocument = Book & mongoose.Document;
 
@@ -62,3 +63,24 @@ export class Book {
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);
+
+BookSchema.index({  createDate : 1 });
+BookSchema.index({  favoritesCount : 1 });
+BookSchema.index({  publishDate : 1 });
+
+BookSchema.index({ authorKeywords : 1, createDate : 1 });
+BookSchema.index({ authorKeywords : 1, favoritesCount : 1 });
+BookSchema.index({ authorKeywords : 1, publishDate : 1 });
+
+BookSchema.index({ titleKeywords : 1, createDate : 1 });
+BookSchema.index({ titleKeywords : 1, favoritesCount : 1 });
+BookSchema.index({ titleKeywords : 1, publishDate : 1 });
+
+
+BookSchema.index({ descriptionKeywords : 1, createDate : 1 });
+BookSchema.index({ descriptionKeywords : 1, favoritesCount : 1 });
+BookSchema.index({ descriptionKeywords : 1, publishDate : 1 });
+
+BookSchema.index({ keywords : 1, createDate : 1 });
+BookSchema.index({ keywords : 1, favoritesCount : 1 });
+BookSchema.index({ keywords : 1, publishDate : 1 });
