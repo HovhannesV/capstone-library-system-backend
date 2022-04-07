@@ -14,7 +14,7 @@ export class FileService {
     }
 
     getFile(fileId: string): Readable {
-        return this.storage.bucket('lms-images').file(fileId).createReadStream();
+        return this.storage.bucket('lms-files').file(fileId).createReadStream();
     }
 
     async uploadFile(path : string) : Promise<string> {
