@@ -101,7 +101,7 @@ export enum PARAM {
 import * as _ from 'lodash'
 import {AuthorService} from "../author/author.service";
 import {GenreService} from "../genre/genre.service";
-import {extractKeywords, normalize} from "../utils";
+import {extractKeywords, extractKeywordsWithPrefixes, normalize} from "../utils";
 import {BookInstanceService} from "./book-instance.service";
 import {FavoriteBooksService} from "./favorite-books-service";
 import * as natural from 'natural'
@@ -148,10 +148,10 @@ export class BookService {
             ..._.omit(bookPayload, 'authorId'),
             author: bookPayload.authorId,
             favoritesCount: 0,
-            authorKeywords : extractKeywords(author.name),
-            titleKeywords : extractKeywords(bookPayload.title),
+            authorKeywords : extractKeywordsWithPrefixes(author.name),
+            titleKeywords : extractKeywordsWithPrefixes(bookPayload.title),
             descriptionKeywords: extractKeywords(bookPayload.description),
-            keywords: extractKeywords(author.name, bookPayload.title, bookPayload.description),
+            keywords: [...new Set(extractKeywordsWithPrefixes(author.name, bookPayload.title).concat(extractKeywords(bookPayload.description)))],
             title : normalize(bookPayload.title),
             description: normalize(bookPayload.description),
         })).toObject();
