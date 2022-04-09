@@ -39,12 +39,6 @@ export class Borrow {
 export const BorrowSchema = SchemaFactory.createForClass(Borrow);
 
 
-BorrowSchema.index(
-    {
-        userId: 1,
-        createDate : 1
-    }
-)
 
 BorrowSchema.index(
     {
