@@ -320,6 +320,11 @@ paths:
           name: limit
           schema:
             type: number
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [ 'all', 'taken', 'returned' ]
       responses:
         200:
           description: success response
@@ -397,6 +402,11 @@ paths:
           name: limit
           schema:
             type: number
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [ 'all', 'taken', 'returned' ]
       responses:
         200:
           description: success response

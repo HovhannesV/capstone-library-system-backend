@@ -1,17 +1,29 @@
 import {
     BadRequestException,
     Body,
-    Controller, DefaultValuePipe, Delete, forwardRef, Get, Headers, Inject, NotFoundException, Param, ParseIntPipe,
-    Post, Put, Query,
+    Controller,
+    DefaultValuePipe,
+    Delete,
+    forwardRef,
+    Get,
+    Headers,
+    Inject,
+    NotFoundException,
+    Param,
+    ParseEnumPipe,
+    ParseIntPipe,
+    Post,
+    Put,
+    Query,
     SetMetadata,
 } from '@nestjs/common';
 import {Role} from "../user/model/user";
-import {BorrowService, UpdateBorrowPayload} from "./borrow.service";
+import {BorrowService, STATUS, UpdateBorrowPayload} from "./borrow.service";
 import {BookInstanceService} from "../book/book-instance.service";
 import {UserService} from "../user/user.service";
 import {IsDateString, IsNotEmpty, IsString} from "class-validator";
 import {Transform, TransformFnParams} from "class-transformer";
-import {BookService} from "../book/book.service";
+import {BookService, PARAM} from "../book/book.service";
 import * as _ from "lodash";
 import * as Path from "path";
 
@@ -52,9 +64,10 @@ export class BorrowController {
     async getBorrows(
         @Query('offset' , new DefaultValuePipe(0), new ParseIntPipe()) offset : number,
         @Query('limit' , new DefaultValuePipe(60), new ParseIntPipe()) limit : number,
+        @Query('status', new DefaultValuePipe(STATUS.ALL), new ParseEnumPipe(STATUS)) status : STATUS,
         @Headers('user_id') userId
     ) {
-        const borrows = await this.getBorrowsPresentation(await this.borrowService.getBorrows(userId, offset, limit), userId);
+        const borrows = await this.getBorrowsPresentation(await this.borrowService.getBorrows(userId, status, offset, limit), userId);
         return {
             status : 'success',
             response : borrows,
@@ -70,9 +83,10 @@ export class BorrowController {
         @Param('userId') userId : string,
         @Query('offset' , new DefaultValuePipe(0), new ParseIntPipe()) offset : number,
         @Query('limit' , new DefaultValuePipe(60), new ParseIntPipe()) limit : number,
+        @Query('status', new DefaultValuePipe(STATUS.ALL), new ParseEnumPipe(STATUS)) status : STATUS,
         @Headers('user_id') adminId
     ) {
-        const borrows = await this.getBorrowsPresentation(await this.borrowService.getBorrows(userId, offset, limit), adminId);
+        const borrows = await this.getBorrowsPresentation(await this.borrowService.getBorrows(userId, status, offset, limit), adminId);
         return {
             status : 'success',
             response : borrows,

@@ -21,6 +21,12 @@ export class UpdateBorrowPayload {
     status : string
 }
 
+export enum STATUS {
+    ALL = "all",
+    TAKEN = 'taken',
+    RETURNED = 'returned'
+}
+
 
 @Injectable()
 export class BorrowService {
@@ -55,13 +61,23 @@ export class BorrowService {
         return bookInstanceIds.map(id => borrows.some(borrow => borrow.bookInstanceId === id));
     }
 
-    async getBorrows(userId : string, offset : number, limit : number) {
-        return this.borrowModel.find({
-            userId
-        })
-        .sort({ createDate : -1 })
-        .skip(offset)
-        .limit(limit);
+    async getBorrows(userId : string, status : STATUS, offset : number, limit : number) {
+        const query = { userId }
+        if(status === STATUS.TAKEN) {
+            query['returnDate'] = null
+        }
+        if(status === STATUS.RETURNED) {
+            query['returnDate'] = {
+                $ne : null
+            }
+        }
+
+        const sort = status === STATUS.ALL ? { createDate : -1 } : { returnDate : -1, createDate : -1 }
+
+        return this.borrowModel.find(query)
+            .sort(sort)
+            .skip(offset)
+            .limit(limit);
     }
 
     async markAsReturned(bookInstanceId : string) {
