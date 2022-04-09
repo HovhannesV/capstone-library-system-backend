@@ -72,10 +72,8 @@ export class BorrowService {
             }
         }
 
-        const sort = status === STATUS.ALL ? { createDate : -1 } : { returnDate : -1, createDate : -1 }
-
         return this.borrowModel.find(query)
-            .sort(sort)
+            .sort({ returnDate : -1, createDate : -1 })
             .skip(offset)
             .limit(limit);
     }
