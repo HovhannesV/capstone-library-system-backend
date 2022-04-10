@@ -50,6 +50,14 @@ BorrowSchema.index(
 
 BorrowSchema.index(
     {
+        userId: 1,
+        createDate : 1
+    }
+)
+
+
+BorrowSchema.index(
+    {
         bookInstanceId: 1
     },
     {
