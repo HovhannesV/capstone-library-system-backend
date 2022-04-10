@@ -60,7 +60,6 @@ export class BorrowController {
 
 
     @Get('/borrows')
-    @SetMetadata('roles', [Role.USER])
     async getBorrows(
         @Query('offset' , new DefaultValuePipe(0), new ParseIntPipe()) offset : number,
         @Query('limit' , new DefaultValuePipe(60), new ParseIntPipe()) limit : number,
