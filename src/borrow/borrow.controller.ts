@@ -117,6 +117,9 @@ export class BorrowController {
         @Headers('user_id') userId,
         @Body() body : CreateBorrowPayload
     ) {
+        if(new Date().getTime() >= body.dueDate.getTime()) {
+            throw new BadRequestException("Due date should be after now");
+        }
         if(!await this.bookInstanceService.getById(body.bookInstanceId)) {
             throw new BadRequestException("Book instance with given does not exist");
         }
