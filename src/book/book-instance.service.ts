@@ -70,6 +70,9 @@ export class BookInstanceService {
             _id : id,
             deleted : false
         })
+        if(!instance) {
+            throw new NotFoundException("Book instance not found");
+        }
         return _.pick(instance,  'coverType', 'id', 'bookId');
     }
 
