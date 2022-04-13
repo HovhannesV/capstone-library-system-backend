@@ -57,7 +57,8 @@ export class UserController {
         return {
             status : 'success',
             response : {
-                token
+                token,
+                refreshToken : payload.refreshToken
             }
         };
     }
