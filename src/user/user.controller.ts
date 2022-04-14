@@ -50,7 +50,8 @@ export class UserController {
     @Post('/tokens')
     @SetMetadata('auth', 'none')
     async getToken(@Body() payload : CreateAccessTokenPayload) {
-        const user = await this.userService.getByRefreshToken(payload.refreshToken);
+        const jti = this.userService.extractJTI(payload.refreshToken);
+        const user = await this.userService.getByRefreshToken(jti);
 
         const token = this.userService.generateToken(user.id, user.role);
 
@@ -67,7 +68,8 @@ export class UserController {
     @Delete('/sessions')
     @SetMetadata('auth', 'none')
     async deleteSession(@Query('refreshToken') refreshToken : string) {
-        await this.userService.removeSession(refreshToken);
+        const jti = this.userService.extractJTI(refreshToken);
+        await this.userService.removeSession(jti);
         return {
             status : 'success',
             response : 'User has signed out'
@@ -77,7 +79,8 @@ export class UserController {
     @Put('/sessions')
     @SetMetadata('auth', 'none')
     async updateSession(@Query('refreshToken') refreshToken : string, @Body() body : UpdateSessionPayload) {
-        await this.userService.updateUserSession(refreshToken, body);
+        const jti = this.userService.extractJTI(refreshToken);
+        await this.userService.updateUserSession(jti, body);
         return {
             status : 'success',
             response : 'User session has been updated'
@@ -94,15 +97,15 @@ export class UserController {
             user = await this.userService.createUserByEmail(userInfo);
         }
 
-        const refreshToken = uuidv4();
-        await this.userService.addSession(user.id, refreshToken, body.fcmToken);
+        const jti = uuidv4();
+        await this.userService.addSession(user.id, jti, body.fcmToken);
 
 
         return {
             status : 'success',
             response : {
                 token : this.userService.generateToken(user.id, user.role),
-                refreshToken
+                refreshToken : this.userService.createRefreshToken(jti)
             }
         }
     }

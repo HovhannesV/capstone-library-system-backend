@@ -19,7 +19,7 @@ export class UserService {
     private userModel : Model<UserDocument>
 
     @Inject('JWT_SECRET')
-    private jwtToken : string;
+    private jwtSecret : string;
 
     private emailDomainPatterns : RegExp[];
     private adminEmailPatterns : RegExp[];
@@ -34,9 +34,22 @@ export class UserService {
     generateToken(id : string, role : string) {
         return jwt.sign(
             { id : id, role : role },
-            this.jwtToken,
+            this.jwtSecret,
             { expiresIn : 10 * 60 }
         );
+    }
+
+    createRefreshToken(jti : string) {
+        return jwt.sign(
+            { jti },
+            this.jwtSecret
+        );
+    }
+
+    extractJTI(refreshToken : string) {
+        const { jti } = jwt.verify(refreshToken, this.jwtSecret);
+        if(!jti) throw new BadRequestException("Invalid refresh token")
+        return jti;
     }
 
     async getById(userId : string) {
