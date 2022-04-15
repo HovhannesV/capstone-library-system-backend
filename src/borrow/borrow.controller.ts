@@ -21,8 +21,8 @@ import {Role} from "../user/model/user";
 import {BorrowService, STATUS, UpdateBorrowPayload} from "./borrow.service";
 import {BookInstanceService} from "../book/book-instance.service";
 import {UserService} from "../user/user.service";
-import {IsDateString, IsNotEmpty, IsString} from "class-validator";
-import {Transform, TransformFnParams} from "class-transformer";
+import {IsDate, IsDateString, IsNotEmpty, IsString} from "class-validator";
+import {Transform, TransformFnParams, Type} from "class-transformer";
 import {BookService, PARAM} from "../book/book.service";
 import * as _ from "lodash";
 import * as Path from "path";
@@ -39,7 +39,9 @@ export class CreateBorrowPayload {
     @Transform(({ value }: TransformFnParams) => value.trim())
     bookInstanceId : string
 
-    @IsDateString()
+
+    @Type(() => Date)
+    @IsDate()
     dueDate : Date
 }
 
