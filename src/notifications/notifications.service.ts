@@ -24,7 +24,7 @@ export class NotificationsService {
 
     private firebaseClient = getMessaging(initializeApp());
 
-    @Cron("0 */5 * * * *")
+    @Cron("*/5 * * * *")
     async scanBorrows() {
         console.log("Scanning non returned borrows...");
         const interval = 5 * 60 * 1000;
