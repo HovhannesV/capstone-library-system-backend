@@ -91,5 +91,13 @@ export class BorrowService {
         })
     }
 
-
+    async getBorrowsByDueDate(offset : Date, limit : number) {
+        return this.borrowModel.find({
+            returnDate : null,
+            dueDate : {
+                $gte : offset as any,
+                $lt : new Date(offset.getTime() + limit) as any
+            }
+        }).cursor();
+    }
 }

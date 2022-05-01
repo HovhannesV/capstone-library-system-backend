@@ -64,3 +64,13 @@ BorrowSchema.index(
         partialFilterExpression: {  returnDate : { $eq: null } }
     }
 )
+
+
+BorrowSchema.index(
+    {
+        dueDate: 1
+    },
+    {
+        partialFilterExpression: {  returnDate : { $eq: null } }
+    }
+)

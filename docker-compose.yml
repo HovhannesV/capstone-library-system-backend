@@ -5,18 +5,30 @@ volumes:
     driver: local
 
 services:
-  node:
+  server:
     build: .
     environment:
       MONGO_CONN_STRING: "mongodb://mongo:27017/DB"
       PORT: "3000"
       GOOGLE_CLIENT_ID: "CLIENT_ID"
       JWT_SECRET : "JWT_SECRET"
-      GOOGLE_APPLICATION_CREDENTIALS: "GOOGLE_APPLICATION_CREDENTIALS" # credentials for accessing google bucket https://cloud.google.com/docs/authentication/production
+      GOOGLE_APPLICATION_CREDENTIALS: "/lms/capstone.json" # credentials for accessing google bucket https://cloud.google.com/docs/authentication/production
     depends_on:
       - mongo
     ports:
       - 3000:3000
+  notifications:
+    build:
+      context: .
+      dockerfile: Dockerfile-notifications
+    environment:
+      MONGO_CONN_STRING: "mongodb://mongo:27017/DB"
+      PORT: "3000"
+      GOOGLE_CLIENT_ID: "CLIENT_ID"
+      JWT_SECRET : "JWT_SECRET"
+      GOOGLE_APPLICATION_CREDENTIALS: "/lms/capstone.json" # credentials for accessing google bucket https://cloud.google.com/docs/authentication/production
+    depends_on:
+      - mongo
   mongo:
     image: mongo
     logging:
