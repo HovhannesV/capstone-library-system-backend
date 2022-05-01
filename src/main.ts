@@ -15,6 +15,7 @@ async function bootstrap() {
   const swaggerDoc = yaml.load(fs.readFileSync(__dirname + '/../swagger/swagger.yml', 'utf8'));
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 
+
   await app.listen(process.env.PORT || 8080);
 }
 bootstrap();
