@@ -20,11 +20,11 @@ export class AuthorService {
     }
 
     async getAuthors(offset = 0, limit = 30) {
-        return this.authorModel.find()
+        return (await this.authorModel.find()
                         .sort({ name : 1 })
                         .skip(offset)
-                        .limit(limit)
-                        .lean();
+                        .limit(limit))
+                        .map(author => author.toObject());
     }
 
     async getAuthorById(id : string) {
