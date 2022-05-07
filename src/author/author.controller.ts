@@ -33,7 +33,7 @@ export class AuthorController {
         const author = await this.authorService.createAuthor(authorPayload.name, authorPayload.imageId);
         return {
             status : 'success',
-            response : _.pick(author, 'id', 'name')
+            response : _.pick(author, 'id', 'name', 'imageId')
         }
     }
 
@@ -45,7 +45,7 @@ export class AuthorController {
         const authors = await this.authorService.getAuthors(offset, limit);
         return {
             status : 'success',
-            response : authors.map(author => _.pick(author, 'id', 'name')),
+            response : authors.map(author => _.pick(author, 'id', 'name', 'imageId')),
             metadata : {
                 nextPage : authors.length === limit ? `/authors?offset=${offset + limit}&limit=${limit}` : undefined
             }
