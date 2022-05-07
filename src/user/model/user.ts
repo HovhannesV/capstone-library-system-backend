@@ -13,7 +13,7 @@ export class Session {
     @Prop({ type: String, required : true })
     refreshToken: string
 
-    @Prop({ type: String, required : true })
+    @Prop({ type: String, default : null })
     fcmToken: string
 }
 

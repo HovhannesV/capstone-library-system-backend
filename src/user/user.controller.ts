@@ -5,7 +5,7 @@ import {
 import {UserService} from "./user.service";
 import * as _ from 'lodash'
 
-import {IsString} from "class-validator";
+import {IsOptional, IsString} from "class-validator";
 import { v4 as uuidv4 } from 'uuid';
 import {GoogleAccountService} from "./google-account-service";
 
@@ -20,7 +20,8 @@ class CreateSessionPayload {
     token : string
 
     @IsString()
-    fcmToken: string
+    @IsOptional()
+    fcmToken ?: string
 }
 
 class UpdateSessionPayload {

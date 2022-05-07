@@ -118,7 +118,7 @@ export class UserService {
         })).toObject();
     }
 
-    async addSession(id : string, refreshToken : string, fcmToken : string) {
+    async addSession(id : string, refreshToken : string, fcmToken : string = null) {
         await this.userModel.updateOne({id}, {
             $push : {
                 sessions : {
