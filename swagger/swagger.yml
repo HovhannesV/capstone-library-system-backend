@@ -569,6 +569,14 @@ paths:
           name: descending
           schema:
             type: boolean
+        - in: query
+          name: offset
+          schema:
+            type: boolean
+        - in: query
+          name: limit
+          schema:
+            type: boolean
       responses:
         200:
           description: success response
@@ -584,6 +592,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Book'
+                  metadata:
+                    type: object
+                    properties:
+                      nextPage:
+                        type: string
     post:
       summary: "Create book (admin)"
       tags:
