@@ -42,9 +42,12 @@ export class NotificationsService {
             await this.firebaseClient.sendAll(
                 tokens.map(token => ({
                     data: {
-                        text : "Dear Reader! You have a book to return tomorrow",
                         bookInstanceId : borrow.bookInstanceId,
                         bookId : book.id
+                    },
+                    notification : {
+                       title : "LMS",
+                       body : "Dear Reader! You have a book to return tomorrow"
                     },
                     token
                 }))
