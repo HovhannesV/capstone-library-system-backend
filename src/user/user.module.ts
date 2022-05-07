@@ -20,8 +20,8 @@ import {UsersDiscoveryController} from "./users-discovery.controller";
         UserService,
         GoogleAccountService,
         {
-            provide : 'GOOGLE_CLIENT_ID',
-            useValue: process.env.GOOGLE_CLIENT_ID
+            provide : 'GOOGLE_CLIENT_IDS',
+            useValue: process.env.GOOGLE_CLIENT_IDS.split(';')
         },
         {
             provide : 'EMAIL_DOMAIN_PATTERNS',

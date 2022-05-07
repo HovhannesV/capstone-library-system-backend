@@ -10,7 +10,7 @@ services:
     environment:
       MONGO_CONN_STRING: "mongodb://mongo:27017/DB"
       PORT: "3000"
-      GOOGLE_CLIENT_ID: "CLIENT_ID"
+      GOOGLE_CLIENT_IDS: "CLIENT_ID;CLIENT_ID"
       JWT_SECRET : "JWT_SECRET"
       GOOGLE_APPLICATION_CREDENTIALS: "/lms/capstone.json" # credentials for accessing google bucket https://cloud.google.com/docs/authentication/production
     depends_on:
@@ -24,7 +24,7 @@ services:
     environment:
       MONGO_CONN_STRING: "mongodb://mongo:27017/DB"
       PORT: "3000"
-      GOOGLE_CLIENT_ID: "CLIENT_ID"
+      GOOGLE_CLIENT_IDS: "CLIENT_ID;CLIENT_ID"
       JWT_SECRET : "JWT_SECRET"
       GOOGLE_APPLICATION_CREDENTIALS: "/lms/capstone.json" # credentials for accessing google bucket https://cloud.google.com/docs/authentication/production
     depends_on:

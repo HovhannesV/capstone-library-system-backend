@@ -14,13 +14,13 @@ export class GoogleAccountService {
     private readonly client = new OAuth2Client();
     private readonly issPattern = /accounts.google.com$/;
 
-    @Inject('GOOGLE_CLIENT_ID')
-    private readonly clientId : string
+    @Inject('GOOGLE_CLIENT_IDS')
+    private readonly clientIds : string[]
 
     async getUserInfo(token : string) : Promise<GoogleAccountInfo> {
         const { email, name, picture, iss } = (await this.client.verifyIdToken({
             idToken : token,
-            audience: this.clientId
+            audience: this.clientIds
         })).getPayload();
 
         if(!iss.match(this.issPattern)[0]) throw new BadRequestException('Token not from google account');
