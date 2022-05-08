@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 
 import {v4} from 'uuid';
 import {Storage} from "@google-cloud/storage";
@@ -13,7 +13,10 @@ export class FileService {
         this.storage = new Storage();
     }
 
-    getFile(fileId: string): Readable {
+    async getFile(fileId: string): Promise<Readable> {
+        if(!(await this.storage.bucket('lms-file').file(fileId).exists())) {
+            throw new NotFoundException("File with given id does not exist");
+        }
         return this.storage.bucket('lms-file').file(fileId).createReadStream();
     }
 

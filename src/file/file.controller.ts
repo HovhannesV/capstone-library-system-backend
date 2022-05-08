@@ -43,7 +43,7 @@ export class FileController {
         res.set({
             'Content-Type': mime.lookup(fileId.split('.').reverse()[0])
         });
-        this.fileService.getFile(fileId).pipe(res);
+        (await this.fileService.getFile(fileId)).pipe(res);
     }
 
 
