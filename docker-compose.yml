@@ -12,7 +12,7 @@ services:
       PORT: "3000"
       GOOGLE_CLIENT_IDS: "CLIENT_ID;CLIENT_ID"
       JWT_SECRET : "JWT_SECRET"
-      GOOGLE_APPLICATION_CREDENTIALS: "/lms/capstone.json" # credentials for accessing google bucket https://cloud.google.com/docs/authentication/production
+      GOOGLE_APPLICATION_CREDENTIALS: "/lms/capstone.json" # credentials for accessing google bucket and firebase api https://cloud.google.com/docs/authentication/production
     depends_on:
       - mongo
     ports:
@@ -26,7 +26,7 @@ services:
       PORT: "3000"
       GOOGLE_CLIENT_IDS: "CLIENT_ID;CLIENT_ID"
       JWT_SECRET : "JWT_SECRET"
-      GOOGLE_APPLICATION_CREDENTIALS: "/lms/capstone.json" # credentials for accessing google bucket https://cloud.google.com/docs/authentication/production
+      GOOGLE_APPLICATION_CREDENTIALS: "/lms/capstone.json" # credentials for accessing google bucket and firebase api https://cloud.google.com/docs/authentication/production
     depends_on:
       - mongo
   mongo:
