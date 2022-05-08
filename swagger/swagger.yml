@@ -1051,8 +1051,6 @@ components:
           type: array
           items:
             type: string
-        coverType:
-          type: string
 
     User:
       type: object
