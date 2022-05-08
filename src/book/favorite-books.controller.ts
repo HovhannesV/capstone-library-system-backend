@@ -30,7 +30,6 @@ export class FavoriteBooksController {
         @Query('limit', new DefaultValuePipe(60)) limit : number
     ) {
         const bookIds = await this.favoriteBooksService.getFavoriteBookIdsOfUser(userId, offset, limit);
-        console.log(await this.bookService.findBooksByIds(bookIds, userId))
         return {
             status : 'success',
             response : await this.bookService.findBooksByIds(bookIds, userId),
