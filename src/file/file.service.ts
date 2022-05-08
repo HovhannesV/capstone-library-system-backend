@@ -14,8 +14,9 @@ export class FileService {
     }
 
     async getFile(fileId: string): Promise<Readable> {
-        if(!(await this.storage.bucket('lms-file').file(fileId).exists())) {
-            throw new NotFoundException("File with given id does not exist");
+        const fileExists = await (this.storage.bucket('lms-file').file(fileId).exists());
+        if(!fileExists[0]) {
+            throw new NotFoundException("File with given id not found");
         }
         return this.storage.bucket('lms-file').file(fileId).createReadStream();
     }

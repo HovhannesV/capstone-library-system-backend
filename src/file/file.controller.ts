@@ -40,10 +40,11 @@ export class FileController {
     @Get('/:fileId')
     @SetMetadata('auth', 'none')
     async getFile(@Param('fileId') fileId, @Res() res) {
+        const file = (await this.fileService.getFile(fileId));
         res.set({
             'Content-Type': mime.lookup(fileId.split('.').reverse()[0])
         });
-        (await this.fileService.getFile(fileId)).pipe(res);
+        file.pipe(res);
     }
 
 
