@@ -49,7 +49,7 @@ export class Book {
     @Prop({ type: [{ type: String }], required: true })
     genres: string[]
 
-    @Prop({ type: String })
+    @Prop({ type: String, default : null })
     fileId: string
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: Author.name })
