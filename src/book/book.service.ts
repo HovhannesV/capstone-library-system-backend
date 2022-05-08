@@ -10,19 +10,19 @@ export class UpdateBookPayload {
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    @Transform(({ value }: TransformFnParams) => value.trim())
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     title?: string;
 
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    @Transform(({ value }: TransformFnParams) => value.trim())
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     description?: string;
 
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    @Transform(({ value }: TransformFnParams) => value.trim())
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     coverImageId?: string;
 
     @IsDateString()
@@ -37,13 +37,13 @@ export class UpdateBookPayload {
 
     @IsString()
     @IsNotEmpty()
-    @Transform(({ value }: TransformFnParams) => value.trim())
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     @IsOptional()
     fileId?: string
 
     @IsString()
     @IsNotEmpty()
-    @Transform(({ value }: TransformFnParams) => value.trim())
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     @IsOptional()
     authorId?: string;
 }
@@ -76,7 +76,8 @@ export class CreateBookPayload {
 
     @IsString()
     @IsNotEmpty()
-    @Transform(({ value }: TransformFnParams) => value.trim())
+    @Transform(({ value }: TransformFnParams) => value?.trim())
+    @IsOptional()
     fileId: string
 
     @IsString()
