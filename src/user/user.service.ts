@@ -53,7 +53,7 @@ export class UserService {
     }
 
     async getById(userId : string) {
-        const user = await this.userModel.findOne({ id : userId });
+        const user = await this.userModel.findOne({ _id : userId });
         if(!user) throw new NotFoundException("User not found");
         return user.toObject();
     }
