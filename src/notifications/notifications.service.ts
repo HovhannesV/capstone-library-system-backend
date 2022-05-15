@@ -46,7 +46,7 @@ export class NotificationsService {
                         bookId : book.id
                     },
                     notification : {
-                       title : "LMS",
+                       title : "Bookify",
                        body : "Dear Reader! You have a book to return tomorrow"
                     },
                     token
