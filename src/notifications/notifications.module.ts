@@ -20,12 +20,6 @@ import {BookModule} from "../book/book.module";
         BookModule,
         ScheduleModule.forRoot()
     ],
-    providers: [
-        NotificationsService,
-        {
-            provide: 'NOTIF_ICON_URL',
-            useValue: process.env.NOTIF_ICON_URL || null,
-        }
-    ]
+    providers: [NotificationsService]
 })
 export class NotificationsModule {}

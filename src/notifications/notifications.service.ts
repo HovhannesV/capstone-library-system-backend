@@ -19,9 +19,6 @@ export class NotificationsService {
     @Inject()
     private bookService : BookService
 
-    @Inject('NOTIF_ICON_URL')
-    private notifIconUrl : string
-
     @Inject()
     private bookInstanceService : BookInstanceService
 
@@ -49,9 +46,8 @@ export class NotificationsService {
                         bookId : book.id
                     },
                     notification : {
-                        title : "Bookify",
-                        body : "Dear Reader! You have a book to return tomorrow",
-                        imageUrl : this.notifIconUrl ? this.notifIconUrl : undefined
+                       title : "LMS",
+                       body : "Dear Reader! You have a book to return tomorrow"
                     },
                     token
                 }))
