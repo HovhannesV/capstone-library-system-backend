@@ -35,7 +35,7 @@ export class UserService {
         return jwt.sign(
             { id : id, role : role },
             this.jwtSecret,
-            { expiresIn : 10 * 60 }
+            { expiresIn : 30 * 60 }
         );
     }
 
