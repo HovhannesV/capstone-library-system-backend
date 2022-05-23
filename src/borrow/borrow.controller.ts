@@ -148,9 +148,15 @@ export class BorrowController {
     }
 
     private async getBorrowRepresentation(borrow, userId : string) {
-        const bookInstance = await this.bookInstanceService.getById(borrow.bookInstanceId);
+        let bookInstance = null;
+        try {
+            bookInstance = await this.bookInstanceService.getById(borrow.bookInstanceId);
+        } catch(err) {
+            if(!(err instanceof NotFoundException)) {
+                throw err;
+            }
+        }
         const book = bookInstance ? await this.bookService.findBookById(bookInstance.bookId, userId) : null;
-
         return {
             ..._.pick(borrow, 'id', 'status', 'bookInstanceId', 'dueDate', 'returnDate', 'createDate'),
             book
